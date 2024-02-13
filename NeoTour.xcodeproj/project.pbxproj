@@ -13,6 +13,7 @@
 		2132183D2B7BC15F0027E828 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2132183B2B7BC15F0027E828 /* Main.storyboard */; };
 		2132183F2B7BC1610027E828 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2132183E2B7BC1610027E828 /* Assets.xcassets */; };
 		213218422B7BC1610027E828 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 213218402B7BC1610027E828 /* LaunchScreen.storyboard */; };
+		2D547127E8986A18B4623053 /* Pods_NeoTour.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5EC365AACF0F571031CF9F9 /* Pods_NeoTour.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,9 @@
 		2132183E2B7BC1610027E828 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		213218412B7BC1610027E828 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		213218432B7BC1610027E828 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4F11135C3603ACB980474C47 /* Pods-NeoTour.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NeoTour.debug.xcconfig"; path = "Target Support Files/Pods-NeoTour/Pods-NeoTour.debug.xcconfig"; sourceTree = "<group>"; };
+		D11763E5D97D13189F67E7A7 /* Pods-NeoTour.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NeoTour.release.xcconfig"; path = "Target Support Files/Pods-NeoTour/Pods-NeoTour.release.xcconfig"; sourceTree = "<group>"; };
+		F5EC365AACF0F571031CF9F9 /* Pods_NeoTour.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NeoTour.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +35,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2D547127E8986A18B4623053 /* Pods_NeoTour.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -42,6 +47,8 @@
 			children = (
 				213218342B7BC15F0027E828 /* NeoTour */,
 				213218332B7BC15F0027E828 /* Products */,
+				D0E61BBB73E9A9D7AC539A7C /* Pods */,
+				D39DF9E21172B6CDE2AB13C5 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -67,6 +74,24 @@
 			path = NeoTour;
 			sourceTree = "<group>";
 		};
+		D0E61BBB73E9A9D7AC539A7C /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				4F11135C3603ACB980474C47 /* Pods-NeoTour.debug.xcconfig */,
+				D11763E5D97D13189F67E7A7 /* Pods-NeoTour.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		D39DF9E21172B6CDE2AB13C5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F5EC365AACF0F571031CF9F9 /* Pods_NeoTour.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -74,9 +99,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 213218462B7BC1610027E828 /* Build configuration list for PBXNativeTarget "NeoTour" */;
 			buildPhases = (
+				318267363380F2747C991BFC /* [CP] Check Pods Manifest.lock */,
 				2132182E2B7BC15F0027E828 /* Sources */,
 				2132182F2B7BC15F0027E828 /* Frameworks */,
 				213218302B7BC15F0027E828 /* Resources */,
+				C6741F79FEF5911FF999C042 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -132,6 +159,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		318267363380F2747C991BFC /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-NeoTour-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C6741F79FEF5911FF999C042 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-NeoTour/Pods-NeoTour-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-NeoTour/Pods-NeoTour-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NeoTour/Pods-NeoTour-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		2132182E2B7BC15F0027E828 /* Sources */ = {
@@ -287,6 +356,7 @@
 		};
 		213218472B7BC1610027E828 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4F11135C3603ACB980474C47 /* Pods-NeoTour.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -314,6 +384,7 @@
 		};
 		213218482B7BC1610027E828 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D11763E5D97D13189F67E7A7 /* Pods-NeoTour.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
