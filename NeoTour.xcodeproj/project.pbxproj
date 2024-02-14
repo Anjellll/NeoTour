@@ -13,6 +13,9 @@
 		2132183F2B7BC1610027E828 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2132183E2B7BC1610027E828 /* Assets.xcassets */; };
 		213218422B7BC1610027E828 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 213218402B7BC1610027E828 /* LaunchScreen.storyboard */; };
 		213218532B7BEC550027E828 /* NetworkLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 213218522B7BEC550027E828 /* NetworkLayer.swift */; };
+		2132185E2B7CF5550027E828 /* ReuseIdentifying.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2132185D2B7CF5550027E828 /* ReuseIdentifying.swift */; };
+		213218602B7CF5880027E828 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2132185F2B7CF5880027E828 /* AppCoordinator.swift */; };
+		213218622B7CFE950027E828 /* OnboardingViewModel .swift in Sources */ = {isa = PBXBuildFile; fileRef = 213218612B7CFE950027E828 /* OnboardingViewModel .swift */; };
 		2D547127E8986A18B4623053 /* Pods_NeoTour.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5EC365AACF0F571031CF9F9 /* Pods_NeoTour.framework */; };
 /* End PBXBuildFile section */
 
@@ -25,6 +28,9 @@
 		213218412B7BC1610027E828 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		213218432B7BC1610027E828 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		213218522B7BEC550027E828 /* NetworkLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkLayer.swift; sourceTree = "<group>"; };
+		2132185D2B7CF5550027E828 /* ReuseIdentifying.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReuseIdentifying.swift; sourceTree = "<group>"; };
+		2132185F2B7CF5880027E828 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		213218612B7CFE950027E828 /* OnboardingViewModel .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnboardingViewModel .swift"; sourceTree = "<group>"; };
 		4F11135C3603ACB980474C47 /* Pods-NeoTour.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NeoTour.debug.xcconfig"; path = "Target Support Files/Pods-NeoTour/Pods-NeoTour.debug.xcconfig"; sourceTree = "<group>"; };
 		D11763E5D97D13189F67E7A7 /* Pods-NeoTour.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NeoTour.release.xcconfig"; path = "Target Support Files/Pods-NeoTour/Pods-NeoTour.release.xcconfig"; sourceTree = "<group>"; };
 		F5EC365AACF0F571031CF9F9 /* Pods_NeoTour.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NeoTour.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -63,6 +69,7 @@
 		213218342B7BC15F0027E828 /* NeoTour */ = {
 			isa = PBXGroup;
 			children = (
+				2132185B2B7CF5240027E828 /* Common  */,
 				2132184A2B7BDD1E0027E828 /* Application */,
 				2132184B2B7BDD3D0027E828 /* Model */,
 				2132184C2B7BDD680027E828 /* Modules */,
@@ -76,6 +83,7 @@
 			children = (
 				213218352B7BC15F0027E828 /* AppDelegate.swift */,
 				213218372B7BC15F0027E828 /* SceneDelegate.swift */,
+				2132185F2B7CF5880027E828 /* AppCoordinator.swift */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -119,6 +127,7 @@
 		2132184F2B7BDDB40027E828 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				213218612B7CFE950027E828 /* OnboardingViewModel .swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -192,6 +201,22 @@
 			children = (
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		2132185B2B7CF5240027E828 /* Common  */ = {
+			isa = PBXGroup;
+			children = (
+				2132185C2B7CF5410027E828 /* Extensions */,
+			);
+			path = "Common ";
+			sourceTree = "<group>";
+		};
+		2132185C2B7CF5410027E828 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				2132185D2B7CF5550027E828 /* ReuseIdentifying.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		D0E61BBB73E9A9D7AC539A7C /* Pods */ = {
@@ -325,10 +350,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				213218602B7CF5880027E828 /* AppCoordinator.swift in Sources */,
 				213218532B7BEC550027E828 /* NetworkLayer.swift in Sources */,
 				2132183A2B7BC15F0027E828 /* OnboardingViewController.swift in Sources */,
 				213218362B7BC15F0027E828 /* AppDelegate.swift in Sources */,
 				213218382B7BC15F0027E828 /* SceneDelegate.swift in Sources */,
+				213218622B7CFE950027E828 /* OnboardingViewModel .swift in Sources */,
+				2132185E2B7CF5550027E828 /* ReuseIdentifying.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -473,6 +501,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NeoTour/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -500,6 +529,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NeoTour/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
