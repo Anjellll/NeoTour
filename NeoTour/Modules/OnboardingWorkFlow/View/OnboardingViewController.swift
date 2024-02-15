@@ -61,7 +61,7 @@ class OnboardingViewController: UIViewController {
     
     private lazy var letsGoButton: UIButton = {
         let button = UIButton()
-        button.contentMode = .center
+        button.contentMode = .scaleToFill
         button.contentHorizontalAlignment = .left
         button.isUserInteractionEnabled = true
         button.setTitle("Let's Go", for: .normal)
@@ -78,8 +78,9 @@ class OnboardingViewController: UIViewController {
         let image = UIImage(systemName: "arrow.right")
         button.setImage(image, for: .normal)
         button.tintColor = .white
-        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        button.imageView?.contentMode = .scaleAspectFit
+        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
+            button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 130, bottom: 0, right: 0) 
+        button.imageView?.contentMode = .right
         
         return button
     }()
