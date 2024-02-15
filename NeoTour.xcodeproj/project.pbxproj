@@ -18,6 +18,7 @@
 		213218622B7CFE950027E828 /* OnboardingViewModel .swift in Sources */ = {isa = PBXBuildFile; fileRef = 213218612B7CFE950027E828 /* OnboardingViewModel .swift */; };
 		218BF6322B7DF35600D33E3B /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218BF6312B7DF35600D33E3B /* MainViewController.swift */; };
 		218BF6342B7DF36800D33E3B /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218BF6332B7DF36800D33E3B /* MainViewModel.swift */; };
+		218BF6402B7E163400D33E3B /* SF-Pro-Display-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 218BF63F2B7E163400D33E3B /* SF-Pro-Display-Black.otf */; };
 		2D547127E8986A18B4623053 /* Pods_NeoTour.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5EC365AACF0F571031CF9F9 /* Pods_NeoTour.framework */; };
 /* End PBXBuildFile section */
 
@@ -35,6 +36,7 @@
 		213218612B7CFE950027E828 /* OnboardingViewModel .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnboardingViewModel .swift"; sourceTree = "<group>"; };
 		218BF6312B7DF35600D33E3B /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		218BF6332B7DF36800D33E3B /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		218BF63F2B7E163400D33E3B /* SF-Pro-Display-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Black.otf"; sourceTree = "<group>"; };
 		4F11135C3603ACB980474C47 /* Pods-NeoTour.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NeoTour.debug.xcconfig"; path = "Target Support Files/Pods-NeoTour/Pods-NeoTour.debug.xcconfig"; sourceTree = "<group>"; };
 		D11763E5D97D13189F67E7A7 /* Pods-NeoTour.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NeoTour.release.xcconfig"; path = "Target Support Files/Pods-NeoTour/Pods-NeoTour.release.xcconfig"; sourceTree = "<group>"; };
 		F5EC365AACF0F571031CF9F9 /* Pods_NeoTour.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NeoTour.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -212,6 +214,7 @@
 		2132185B2B7CF5240027E828 /* Common  */ = {
 			isa = PBXGroup;
 			children = (
+				218BF6382B7E125B00D33E3B /* Fonts */,
 				2132185C2B7CF5410027E828 /* Extensions */,
 			);
 			path = "Common ";
@@ -223,6 +226,14 @@
 				2132185D2B7CF5550027E828 /* ReuseIdentifying.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		218BF6382B7E125B00D33E3B /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				218BF63F2B7E163400D33E3B /* SF-Pro-Display-Black.otf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 		D0E61BBB73E9A9D7AC539A7C /* Pods */ = {
@@ -304,6 +315,7 @@
 			files = (
 				213218422B7BC1610027E828 /* LaunchScreen.storyboard in Resources */,
 				2132183F2B7BC1610027E828 /* Assets.xcassets in Resources */,
+				218BF6402B7E163400D33E3B /* SF-Pro-Display-Black.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
