@@ -7,6 +7,10 @@
 
 import Foundation
 
+protocol OnboardingViewModelDelegate: AnyObject {
+
+}
+
 class OnboardingViewModel {
-    
+   
 }

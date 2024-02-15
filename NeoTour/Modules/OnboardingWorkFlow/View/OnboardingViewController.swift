@@ -11,6 +11,7 @@ import SnapKit
 class OnboardingViewController: UIViewController {
     
     private var viewModel: OnboardingViewModel?
+    weak var coordinator: AppCoordinator?
     
     init(viewModel: OnboardingViewModel) {
         self.viewModel = viewModel
@@ -68,6 +69,7 @@ class OnboardingViewController: UIViewController {
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 25
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        button.addTarget(self, action: #selector(goToMainScreen), for: .touchUpInside)
         button.backgroundColor = UIColor(
             red: CGFloat(0x6A) / 255.0,
             green: CGFloat(0x62) / 255.0,
@@ -79,7 +81,7 @@ class OnboardingViewController: UIViewController {
         button.setImage(image, for: .normal)
         button.tintColor = .white
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
-            button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 130, bottom: 0, right: 0) 
+            button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 130, bottom: 0, right: 0)
         button.imageView?.contentMode = .right
         
         return button
@@ -93,6 +95,10 @@ class OnboardingViewController: UIViewController {
     override func loadView() {
         super.loadView()
         setUpUI()
+    }
+    
+    @objc private func goToMainScreen() {
+        coordinator?.goToMainScreen()
     }
 }
 
@@ -140,3 +146,4 @@ extension OnboardingViewController {
         }
     }
 }
+
