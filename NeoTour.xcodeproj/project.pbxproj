@@ -19,6 +19,8 @@
 		218BF6322B7DF35600D33E3B /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218BF6312B7DF35600D33E3B /* MainViewController.swift */; };
 		218BF6342B7DF36800D33E3B /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218BF6332B7DF36800D33E3B /* MainViewModel.swift */; };
 		218BF6402B7E163400D33E3B /* SF-Pro-Display-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 218BF63F2B7E163400D33E3B /* SF-Pro-Display-Black.otf */; };
+		218BF6442B7E189700D33E3B /* ToursCategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218BF6432B7E189700D33E3B /* ToursCategoryModel.swift */; };
+		218BF6472B7E1A5C00D33E3B /* ToursCategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218BF6462B7E1A5C00D33E3B /* ToursCategoryCollectionViewCell.swift */; };
 		2D547127E8986A18B4623053 /* Pods_NeoTour.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5EC365AACF0F571031CF9F9 /* Pods_NeoTour.framework */; };
 /* End PBXBuildFile section */
 
@@ -37,6 +39,8 @@
 		218BF6312B7DF35600D33E3B /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		218BF6332B7DF36800D33E3B /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		218BF63F2B7E163400D33E3B /* SF-Pro-Display-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Black.otf"; sourceTree = "<group>"; };
+		218BF6432B7E189700D33E3B /* ToursCategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToursCategoryModel.swift; sourceTree = "<group>"; };
+		218BF6462B7E1A5C00D33E3B /* ToursCategoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToursCategoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		4F11135C3603ACB980474C47 /* Pods-NeoTour.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NeoTour.debug.xcconfig"; path = "Target Support Files/Pods-NeoTour/Pods-NeoTour.debug.xcconfig"; sourceTree = "<group>"; };
 		D11763E5D97D13189F67E7A7 /* Pods-NeoTour.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NeoTour.release.xcconfig"; path = "Target Support Files/Pods-NeoTour/Pods-NeoTour.release.xcconfig"; sourceTree = "<group>"; };
 		F5EC365AACF0F571031CF9F9 /* Pods_NeoTour.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NeoTour.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -97,6 +101,7 @@
 		2132184B2B7BDD3D0027E828 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				218BF6412B7E186600D33E3B /* LocalData */,
 				213218542B7BEC5C0027E828 /* NetworkLayer */,
 				213218512B7BDE190027E828 /* DTOs */,
 			);
@@ -166,6 +171,7 @@
 		213218552B7BFD810027E828 /* MainWorkFlow */ = {
 			isa = PBXGroup;
 			children = (
+				218BF6452B7E1A3900D33E3B /* UIComponents */,
 				213218572B7BFD9C0027E828 /* ViewModel */,
 				213218562B7BFD930027E828 /* View */,
 			);
@@ -234,6 +240,22 @@
 				218BF63F2B7E163400D33E3B /* SF-Pro-Display-Black.otf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		218BF6412B7E186600D33E3B /* LocalData */ = {
+			isa = PBXGroup;
+			children = (
+				218BF6432B7E189700D33E3B /* ToursCategoryModel.swift */,
+			);
+			path = LocalData;
+			sourceTree = "<group>";
+		};
+		218BF6452B7E1A3900D33E3B /* UIComponents */ = {
+			isa = PBXGroup;
+			children = (
+				218BF6462B7E1A5C00D33E3B /* ToursCategoryCollectionViewCell.swift */,
+			);
+			path = UIComponents;
 			sourceTree = "<group>";
 		};
 		D0E61BBB73E9A9D7AC539A7C /* Pods */ = {
@@ -369,10 +391,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				213218602B7CF5880027E828 /* AppCoordinator.swift in Sources */,
+				218BF6442B7E189700D33E3B /* ToursCategoryModel.swift in Sources */,
 				213218532B7BEC550027E828 /* NetworkLayer.swift in Sources */,
 				2132183A2B7BC15F0027E828 /* OnboardingViewController.swift in Sources */,
 				213218362B7BC15F0027E828 /* AppDelegate.swift in Sources */,
 				213218382B7BC15F0027E828 /* SceneDelegate.swift in Sources */,
+				218BF6472B7E1A5C00D33E3B /* ToursCategoryCollectionViewCell.swift in Sources */,
 				213218622B7CFE950027E828 /* OnboardingViewModel .swift in Sources */,
 				2132185E2B7CF5550027E828 /* ReuseIdentifying.swift in Sources */,
 				218BF6322B7DF35600D33E3B /* MainViewController.swift in Sources */,
