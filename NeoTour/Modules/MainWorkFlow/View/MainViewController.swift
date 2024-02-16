@@ -45,13 +45,13 @@ class MainViewController: UIViewController, ReuseIdentifying {
     private lazy var toursCategoryCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.minimumInteritemSpacing = 10  // Отступ между элементами
-        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize  // Размер будет автоматически рассчитан
+        layout.minimumInteritemSpacing = 10
+        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
 //        collectionView.backgroundColor = .red
-        collectionView.delegate = self  // Установка делегата для работы с UICollectionViewFlowLayout
+        collectionView.delegate = self
         return collectionView
     }()
     
@@ -91,7 +91,6 @@ extension MainViewController {
             $0.left.equalToSuperview().offset(16)
             $0.right.equalToSuperview().offset(-16)
             $0.height.equalTo(39)
-//            $0.width.equalTo(343)
         }
     }
     

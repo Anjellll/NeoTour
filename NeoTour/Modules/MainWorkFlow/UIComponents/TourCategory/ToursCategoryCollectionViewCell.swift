@@ -14,7 +14,6 @@ class ToursCategoryCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
         label.font = .systemFont(ofSize: 16, weight: .medium)
         label.textColor = UIColor.black
         label.textAlignment = .center
-//        label.backgroundColor = .brown
         return label
     }()
     
