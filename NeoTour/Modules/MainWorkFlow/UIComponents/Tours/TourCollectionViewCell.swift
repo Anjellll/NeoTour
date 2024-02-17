@@ -21,6 +21,7 @@ class TourCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
         image.contentMode = .scaleAspectFill
         image.layer.cornerRadius = 16
         image.clipsToBounds = true
+        image.backgroundColor = .gray
         return image
     }()
     
