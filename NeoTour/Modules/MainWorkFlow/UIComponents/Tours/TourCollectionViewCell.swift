@@ -55,7 +55,7 @@ extension TourCollectionViewCell {
             $0.left.equalToSuperview().offset(16)
             $0.bottom.equalToSuperview().offset(-16)
             $0.height.equalTo(24)
-            $0.width.equalTo(167)
+            $0.width.equalTo(180)
         }
     }
     

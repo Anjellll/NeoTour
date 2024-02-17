@@ -49,6 +49,14 @@ class MainViewController: UIViewController, ReuseIdentifying {
         return label
     }()
     
+    private lazy var recommendedLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .black
+        label.text = "Recommended"
+        label.font = UIFont(name: "Avenir Next Bold", size: 20)
+        return label
+    }()
+    
     private lazy var toursCategoryCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -111,6 +119,7 @@ extension MainViewController {
         view.addSubview(toursCategoryCollectionView)
         view.addSubview(toursCollectionView)
         view.addSubview(pageControl)
+        view.addSubview(recommendedLabel)
     }
     
     private func setUpConstraints() {
@@ -131,13 +140,21 @@ extension MainViewController {
         toursCollectionView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(167)
             $0.height.equalTo(254)
-            $0.leading.trailing.equalToSuperview()
+            $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalToSuperview()
         }
         
         pageControl.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
-            $0.top.equalTo(toursCollectionView.snp.bottom)
+            $0.top.equalToSuperview().offset(430)
             $0.height.equalTo(23)
+        }
+        
+        recommendedLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(475)
+            $0.leading.equalToSuperview().inset(16)
+            $0.width.equalTo(149)
+            $0.height.equalTo(24)
         }
     }
     
