@@ -26,6 +26,8 @@ class MainViewController: UIViewController, ReuseIdentifying {
     TourModel(name: "Mount Fuji", image: "placeImage2"),
     TourModel(name: "Northern Mountain", image: "placeImage1"),
     TourModel(name: "Mount Fuji", image: "placeImage2"),
+    TourModel(name: "Northern Mountain", image: "placeImage1"),
+    TourModel(name: "Mount Fuji", image: "placeImage2")
     ]
     
     init(viewModel: MainViewModel) {
@@ -69,13 +71,22 @@ class MainViewController: UIViewController, ReuseIdentifying {
         return collectionView
     }()
     
-    private lazy var  toursCollectionView: UICollectionView = {
+    private lazy var toursCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.translatesAutoresizingMaskIntoConstraints =  false
         collectionView.isPagingEnabled = true
+        return collectionView
+    }()
+    
+    private lazy var recommendedToursCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.translatesAutoresizingMaskIntoConstraints =  false
         return collectionView
     }()
     
@@ -120,6 +131,7 @@ extension MainViewController {
         view.addSubview(toursCollectionView)
         view.addSubview(pageControl)
         view.addSubview(recommendedLabel)
+        view.addSubview(recommendedToursCollectionView)
     }
     
     private func setUpConstraints() {
@@ -156,6 +168,14 @@ extension MainViewController {
             $0.width.equalTo(149)
             $0.height.equalTo(24)
         }
+        
+        recommendedToursCollectionView.snp.makeConstraints {
+            $0.top.equalTo(recommendedLabel.snp.bottom).offset(15)
+//            $0.leading.equalToSuperview().offset(16)
+//            $0.trailing.equalToSuperview().offset(-16)
+            $0.bottom.leading.trailing.equalToSuperview()
+            $0.height.width.equalTo(185)
+        }
     }
     
     private func configureCollectionViews() {
@@ -164,9 +184,12 @@ extension MainViewController {
         toursCategoryCollectionView.delegate = self
         
         toursCollectionView.register(TourCollectionViewCell.self, forCellWithReuseIdentifier: TourCollectionViewCell.reuseIdentifier)
-        
         toursCollectionView.dataSource = self
         toursCollectionView.delegate = self
+        
+        recommendedToursCollectionView.register(RecommendedToursCollectionCell.self, forCellWithReuseIdentifier: RecommendedToursCollectionCell.reuseIdentifier)
+        recommendedToursCollectionView.dataSource = self
+        recommendedToursCollectionView.delegate = self
     }
 }
 
@@ -177,10 +200,12 @@ extension MainViewController: UICollectionViewDataSource {
             return toursCategoryData.count
         } else if collectionView == toursCollectionView {
             return toursData.count
+        } else if collectionView == recommendedToursCollectionView {
+            return toursData.count
         }
         return 0
     }
-    
+   
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == toursCategoryCollectionView {
             guard let cell = toursCategoryCollectionView.dequeueReusableCell(
@@ -196,6 +221,13 @@ extension MainViewController: UICollectionViewDataSource {
                 for: indexPath) as? TourCollectionViewCell else { fatalError() }
             let tour = toursData[indexPath.item]
             cell.displayInfo(tour: tour)
+            return cell
+        } else if collectionView == recommendedToursCollectionView {
+            guard let cell = recommendedToursCollectionView.dequeueReusableCell(
+                withReuseIdentifier: RecommendedToursCollectionCell.reuseIdentifier,
+                for: indexPath) as? RecommendedToursCollectionCell else { fatalError() }
+            let recommended = toursData[indexPath.item]
+            cell.displayInfo(tour: recommended)
             return cell
         }
         fatalError("Unexpected collection view")
@@ -223,7 +255,10 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
             return CGSize(width: label.frame.width + 20, height: collectionView.bounds.height)
         } else if collectionView == toursCollectionView {
             return CGSize(width: 335, height: 254)
+        } else if collectionView == recommendedToursCollectionView {
+            return CGSize(width: 185, height: 185)
         }
         return CGSize.zero
     }
 }
+

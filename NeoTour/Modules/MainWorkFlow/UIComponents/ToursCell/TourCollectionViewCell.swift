@@ -13,6 +13,7 @@ class TourCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
         var label = UILabel()
         label.font = .systemFont(ofSize: 20, weight: .medium)
         label.textColor = UIColor.white
+//        label.backgroundColor = .red
         return label
     }()
     
@@ -49,13 +50,14 @@ extension TourCollectionViewCell {
     private func setupConstraints() {
         placeImage.snp.makeConstraints {
             $0.edges.equalToSuperview()
+            $0.height.width.equalTo(185)  // ?
         }
         
         placeNameLabel.snp.makeConstraints {
             $0.left.equalToSuperview().offset(16)
             $0.bottom.equalToSuperview().offset(-16)
-            $0.height.equalTo(24)
-            $0.width.equalTo(180)
+            $0.height.equalTo(17)
+            $0.width.equalTo(200)
         }
     }
     

@@ -23,6 +23,7 @@
 		218BF6472B7E1A5C00D33E3B /* ToursCategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218BF6462B7E1A5C00D33E3B /* ToursCategoryCollectionViewCell.swift */; };
 		218BF6492B7F341000D33E3B /* TourModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218BF6482B7F341000D33E3B /* TourModel.swift */; };
 		218BF64B2B7F358E00D33E3B /* TourCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218BF64A2B7F358E00D33E3B /* TourCollectionViewCell.swift */; };
+		218BF6502B80916600D33E3B /* RecommendedToursCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218BF64F2B80916600D33E3B /* RecommendedToursCollectionCell.swift */; };
 		2D547127E8986A18B4623053 /* Pods_NeoTour.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5EC365AACF0F571031CF9F9 /* Pods_NeoTour.framework */; };
 /* End PBXBuildFile section */
 
@@ -45,6 +46,7 @@
 		218BF6462B7E1A5C00D33E3B /* ToursCategoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToursCategoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		218BF6482B7F341000D33E3B /* TourModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourModel.swift; sourceTree = "<group>"; };
 		218BF64A2B7F358E00D33E3B /* TourCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourCollectionViewCell.swift; sourceTree = "<group>"; };
+		218BF64F2B80916600D33E3B /* RecommendedToursCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendedToursCollectionCell.swift; sourceTree = "<group>"; };
 		4F11135C3603ACB980474C47 /* Pods-NeoTour.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NeoTour.debug.xcconfig"; path = "Target Support Files/Pods-NeoTour/Pods-NeoTour.debug.xcconfig"; sourceTree = "<group>"; };
 		D11763E5D97D13189F67E7A7 /* Pods-NeoTour.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NeoTour.release.xcconfig"; path = "Target Support Files/Pods-NeoTour/Pods-NeoTour.release.xcconfig"; sourceTree = "<group>"; };
 		F5EC365AACF0F571031CF9F9 /* Pods_NeoTour.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NeoTour.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -258,26 +260,35 @@
 		218BF6452B7E1A3900D33E3B /* UIComponents */ = {
 			isa = PBXGroup;
 			children = (
-				218BF64D2B7F359E00D33E3B /* Tours */,
-				218BF64C2B7F359300D33E3B /* TourCategory */,
+				218BF64E2B80911B00D33E3B /* RecommendedToursCell */,
+				218BF64D2B7F359E00D33E3B /* ToursCell */,
+				218BF64C2B7F359300D33E3B /* TourCategoryCell */,
 			);
 			path = UIComponents;
 			sourceTree = "<group>";
 		};
-		218BF64C2B7F359300D33E3B /* TourCategory */ = {
+		218BF64C2B7F359300D33E3B /* TourCategoryCell */ = {
 			isa = PBXGroup;
 			children = (
 				218BF6462B7E1A5C00D33E3B /* ToursCategoryCollectionViewCell.swift */,
 			);
-			path = TourCategory;
+			path = TourCategoryCell;
 			sourceTree = "<group>";
 		};
-		218BF64D2B7F359E00D33E3B /* Tours */ = {
+		218BF64D2B7F359E00D33E3B /* ToursCell */ = {
 			isa = PBXGroup;
 			children = (
 				218BF64A2B7F358E00D33E3B /* TourCollectionViewCell.swift */,
 			);
-			path = Tours;
+			path = ToursCell;
+			sourceTree = "<group>";
+		};
+		218BF64E2B80911B00D33E3B /* RecommendedToursCell */ = {
+			isa = PBXGroup;
+			children = (
+				218BF64F2B80916600D33E3B /* RecommendedToursCollectionCell.swift */,
+			);
+			path = RecommendedToursCell;
 			sourceTree = "<group>";
 		};
 		D0E61BBB73E9A9D7AC539A7C /* Pods */ = {
@@ -425,6 +436,7 @@
 				2132185E2B7CF5550027E828 /* ReuseIdentifying.swift in Sources */,
 				218BF6322B7DF35600D33E3B /* MainViewController.swift in Sources */,
 				218BF6342B7DF36800D33E3B /* MainViewModel.swift in Sources */,
+				218BF6502B80916600D33E3B /* RecommendedToursCollectionCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
