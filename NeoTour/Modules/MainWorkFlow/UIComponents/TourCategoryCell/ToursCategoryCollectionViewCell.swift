@@ -22,6 +22,10 @@ class ToursCategoryCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
         setUpUI()
     }
     
+    func displayInfo(tours: ToursCategoryModel) {
+        categoryLabel.text = tours.name
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -44,9 +48,5 @@ extension ToursCategoryCollectionViewCell {
             $0.right.equalToSuperview().offset(-10)
             $0.height.equalTo(39)
         }
-    }
-    
-    func displayInfo(tours: ToursCategoryModel) {
-        categoryLabel.text = tours.name
     }
 }

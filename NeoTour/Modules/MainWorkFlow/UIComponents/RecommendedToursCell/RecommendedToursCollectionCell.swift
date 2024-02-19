@@ -29,6 +29,16 @@ class RecommendedToursCollectionCell: UICollectionViewCell, ReuseIdentifying {
         setUpUI()
     }
     
+    func setUpRecommendedView(tour: TourModel) {
+        placeNameLabel.text = tour.name
+        
+        if let image = tour.image {
+            placeImage.image = UIImage(named: image)
+        } else {
+            placeImage.image = UIImage(named: "placeholderImage")
+        }
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -55,16 +65,6 @@ extension RecommendedToursCollectionCell {
             $0.bottom.equalToSuperview().offset(-12)
             $0.height.equalTo(24)
             $0.width.equalTo(180)
-        }
-    }
-    
-    func displayInfo(tour: TourModel) {
-        placeNameLabel.text = tour.name
-        
-        if let image = tour.image {
-            placeImage.image = UIImage(named: image)
-        } else {
-            placeImage.image = UIImage(named: "placeholderImage")
         }
     }
 }

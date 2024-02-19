@@ -217,14 +217,14 @@ extension MainViewController: UICollectionViewDataSource {
                 withReuseIdentifier: TourCollectionViewCell.reuseIdentifier,
                 for: indexPath) as? TourCollectionViewCell else { fatalError() }
             let tour = toursData[indexPath.item]
-            cell.displayInfo(tour: tour)
+            cell.configure(tour: tour)
             return cell
         } else if collectionView == recommendedToursCollectionView {
             guard let cell = recommendedToursCollectionView.dequeueReusableCell(
                 withReuseIdentifier: RecommendedToursCollectionCell.reuseIdentifier,
                 for: indexPath) as? RecommendedToursCollectionCell else { fatalError() }
             let recommended = toursData[indexPath.item]
-            cell.displayInfo(tour: recommended)
+            cell.setUpRecommendedView(tour: recommended)
             return cell
         }
         fatalError("Unexpected collection view")

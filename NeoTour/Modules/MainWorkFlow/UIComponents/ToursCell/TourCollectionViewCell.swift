@@ -31,6 +31,16 @@ class TourCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
         setUpUI()
     }
     
+    func configure(tour: TourModel) {
+        placeNameLabel.text = tour.name
+        
+        if let image = tour.image {
+            placeImage.image = UIImage(named: image)
+        } else {
+            placeImage.image = UIImage(named: "placeholderImage")
+        }
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -58,16 +68,6 @@ extension TourCollectionViewCell {
             $0.bottom.equalToSuperview().offset(-16)
             $0.height.equalTo(17)
             $0.width.equalTo(200)
-        }
-    }
-    
-    func displayInfo(tour: TourModel) {
-        placeNameLabel.text = tour.name
-        
-        if let image = tour.image {
-            placeImage.image = UIImage(named: image)
-        } else {
-            placeImage.image = UIImage(named: "placeholderImage")
         }
     }
 }
