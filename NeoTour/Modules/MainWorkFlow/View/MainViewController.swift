@@ -12,18 +12,15 @@ class MainViewController: UIViewController, ReuseIdentifying {
     private var viewModel: MainViewModel?
     
     private var toursCategoryData: [ToursCategoryModel] = [
-    ToursCategoryModel(name: "Popular"), // Popular, Featured, Most Visited, Europe, Europe
+    ToursCategoryModel(name: "Popular"),
     ToursCategoryModel(name: "Featured"),
     ToursCategoryModel(name: "Most Visited"),
     ToursCategoryModel(name: "Europe"),
     ToursCategoryModel(name: "Asia"),
-    ToursCategoryModel(name: "Asia"),
-    ToursCategoryModel(name: "Asia"),
+    ToursCategoryModel(name: "Asia")
     ]
     
     private var toursData: [TourModel] = [
-    TourModel(name: "Northern Mountain", image: "placeImage1"),
-    TourModel(name: "Mount Fuji", image: "placeImage2"),
     TourModel(name: "Northern Mountain", image: "placeImage1"),
     TourModel(name: "Mount Fuji", image: "placeImage2"),
     TourModel(name: "Northern Mountain", image: "placeImage1"),
