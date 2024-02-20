@@ -24,8 +24,8 @@ final class AppCoordinator {
     }
 
     func goToMainScreen() {
-        let mainViewModel = MainViewModel()
-        let mainViewController = MainViewController(viewModel: mainViewModel)
+        let mainViewModel = TestingMainViewModel()
+        let mainViewController = TestingMainViewController(viewModel: mainViewModel)
         window?.rootViewController = mainViewController
     }
 }
