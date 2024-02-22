@@ -9,7 +9,7 @@ import UIKit
 
 class MainViewController: UIViewController, ReuseIdentifying {
 
-    private var viewModel: MainViewModel?
+    private var viewModel: MainViewModel
     
     private var toursCategoryData: [ToursCategoryModel] = [
     ToursCategoryModel(name: "Popular"),

@@ -48,12 +48,12 @@ class TestingMainViewController: UIViewController, ReuseIdentifying {
     }()
     
     private var toursCategoryData: [ToursCategoryModel] = [
-    ToursCategoryModel(name: "Popular"),
-    ToursCategoryModel(name: "Featured"),
-    ToursCategoryModel(name: "Most Visited"),
-    ToursCategoryModel(name: "Europe"),
-    ToursCategoryModel(name: "Asia"),
-    ToursCategoryModel(name: "Asia")
+        ToursCategoryModel(name: "Popular"),
+        ToursCategoryModel(name: "Featured"),
+        ToursCategoryModel(name: "Most Visited"),
+        ToursCategoryModel(name: "Europe"),
+        ToursCategoryModel(name: "Asia"),
+        ToursCategoryModel(name: "Asia")
     ]
     
     private var toursData: [TourModel] = [
@@ -76,17 +76,14 @@ class TestingMainViewController: UIViewController, ReuseIdentifying {
         let label = UILabel()
         label.textColor = .black
         label.text = "Discover"
-        if let font = UIFont(name: "SF-Pro-Display-Black", size: 32) {
-            label.font = font
-        } else {
-            label.font = UIFont.systemFont(ofSize: 32, weight: .bold)
-        }
+        label.font = UIFont(name: "Avenir Next Bold", size: 32)
         return label
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        mainViewCollectionView.delegate = self
     }
     
     override func loadView() {
@@ -202,7 +199,7 @@ extension TestingMainViewController {
         
         view.addSubview(mainViewCollectionView)
         mainViewCollectionView.snp.makeConstraints {
-            $0.top.equalTo(discoverLabel.snp.bottom).offset(11)
+            $0.top.equalTo(discoverLabel.snp.bottom).offset(5)
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalToSuperview()
         }
@@ -284,27 +281,29 @@ extension TestingMainViewController {
 extension TestingMainViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let section = Section.allCases[indexPath.section]
-        let item = dataSource.itemIdentifier(for: indexPath)
-        
-        switch section {
-        case .categoryTours:
-            if case let .category(_) = item {
-                if let cell = collectionView.cellForItem(at: indexPath) as? ToursCategoryCollectionViewCell {
-                    cell.categoryLabel.font = UIFont(name: "Avenir Next Bold", size: 16)
-                    cell.categoryLabel.textColor = .red
-                    cell.selectedPoint.isHidden = false
-                }
-            }
-        case .galeryTour:
-            if case let .galery(data) = item {
-               
-            }
-        case .recommendedTours:
-            if case let .recommended(data) = item {
+                let item = dataSource.itemIdentifier(for: indexPath)
+                
+                switch section {
+                case .categoryTours:
+                    if case let .category(_) = item {
+                        if let cell = collectionView.cellForItem(at: indexPath) as? ToursCategoryCollectionViewCell {
+                            cell.categoryLabel.font = UIFont(name: "Avenir Next Bold", size: 16)
+                            cell.categoryLabel.textColor = .red
+                            cell.selectedPoint.isHidden = false
+
+                            }
+                    }
+                case .galeryTour:
+                    if case let .galery(data) = item {
+//                        let vc = TourDetailsViewController() // ?
+//                        navigationController?.pushViewController(vc, animated: true)
+                    }
+                case .recommendedTours:
+                    if case let .recommended(data) = item {
             
-            }
+                    }
+                }
         }
-    }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         if Section.allCases[indexPath.section] == .categoryTours {
@@ -314,8 +313,8 @@ extension TestingMainViewController: UICollectionViewDelegate {
                     cell.categoryLabel.font = UIFont(name: "Avenir Next", size: 16)
                     cell.categoryLabel.textColor = .black
                     cell.selectedPoint.isHidden = true
-                    
-                }
+
+                    }
             }
         }
     }

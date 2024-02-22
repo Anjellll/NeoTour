@@ -35,7 +35,7 @@ class RecommendedToursCollectionCell: UICollectionViewCell, ReuseIdentifying {
         if let image = tour.image {
             placeImage.image = UIImage(named: image)
         } else {
-            placeImage.image = UIImage(named: "placeholderImage")
+            placeImage.image = UIImage(named: "defaultImage")
         }
     }
     

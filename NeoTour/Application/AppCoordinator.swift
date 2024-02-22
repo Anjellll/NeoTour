@@ -15,8 +15,8 @@ final class AppCoordinator {
     }
 
     func start() {
-        let onboardingViewModel = OnboardingViewModel()
-        let onboardingViewController = OnboardingViewController(viewModel: onboardingViewModel)
+        let onboardingViewModel = TestingDetailViewModel()
+        let onboardingViewController = TestingDetailViewController(viewModel: onboardingViewModel)
         onboardingViewController.coordinator = self
 
         window?.rootViewController = onboardingViewController
@@ -24,8 +24,8 @@ final class AppCoordinator {
     }
 
     func goToMainScreen() {
-        let mainViewModel = TestingMainViewModel()
-        let mainViewController = TestingMainViewController(viewModel: mainViewModel)
+        let mainViewModel = TourDetailsViewModel()
+        let mainViewController = TourDetailsViewController(viewModel: mainViewModel)
         window?.rootViewController = mainViewController
     }
 }

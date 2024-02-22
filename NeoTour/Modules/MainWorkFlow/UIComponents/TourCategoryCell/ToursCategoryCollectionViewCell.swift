@@ -14,7 +14,6 @@ class ToursCategoryCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
         label.font = UIFont(name: "Avenir Next", size: 16)
         label.textColor = .black
         label.textAlignment = .center
-        label.backgroundColor = .yellow
         return label
     }()
     
@@ -53,18 +52,18 @@ extension ToursCategoryCollectionViewCell {
     }
     
     private func setUpConstraints() {
-        categoryLabel.snp.makeConstraints { make in
-            make.top.equalTo(contentView.snp.top)
-            make.bottom.equalTo(contentView.snp.bottom).offset(-10)
-            make.left.equalTo(contentView.snp.left)
-            make.right.equalTo(contentView.snp.right)
+        categoryLabel.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.left.equalToSuperview().offset(10)
+            $0.right.equalToSuperview().offset(-10)
+            $0.height.equalTo(35)
         }
         
-        selectedPoint.snp.makeConstraints { make in
-            make.centerX.equalTo(contentView.snp.centerX)
-            make.top.equalTo(categoryLabel.snp.bottom).offset(5)
-            make.width.equalTo(7)
-            make.height.equalTo(7)
+        selectedPoint.snp.makeConstraints {
+            $0.centerX.equalTo(contentView.snp.centerX)
+            $0.top.equalTo(categoryLabel.snp.bottom)
+            $0.width.equalTo(7)
+            $0.height.equalTo(7)
         }
     }
 }

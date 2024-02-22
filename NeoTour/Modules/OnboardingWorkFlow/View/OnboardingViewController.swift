@@ -99,7 +99,7 @@ class OnboardingViewController: UIViewController {
     
     @objc private func goToMainScreen() {
         coordinator?.goToMainScreen()
-    }
+   }
 }
 
 extension OnboardingViewController {

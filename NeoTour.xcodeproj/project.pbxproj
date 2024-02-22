@@ -27,6 +27,15 @@
 		218BF6522B83E10700D33E3B /* TestingMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218BF6512B83E10700D33E3B /* TestingMainViewController.swift */; };
 		218BF6542B83E11E00D33E3B /* TestingMainViewModel .swift in Sources */ = {isa = PBXBuildFile; fileRef = 218BF6532B83E11E00D33E3B /* TestingMainViewModel .swift */; };
 		218BF6572B83E86200D33E3B /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218BF6562B83E86200D33E3B /* HeaderView.swift */; };
+		218BF6592B85348400D33E3B /* TourDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218BF6582B85348400D33E3B /* TourDetailsViewController.swift */; };
+		218BF65B2B85349300D33E3B /* TourDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218BF65A2B85349300D33E3B /* TourDetailsViewModel.swift */; };
+		218BF65F2B85359A00D33E3B /* TourDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218BF65E2B85359A00D33E3B /* TourDetailsCell.swift */; };
+		218BF6612B8535B300D33E3B /* TourDeatilsCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218BF6602B8535B300D33E3B /* TourDeatilsCollectionCell.swift */; };
+		218BF6652B8544ED00D33E3B /* ReviewsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218BF6642B8544ED00D33E3B /* ReviewsModel.swift */; };
+		218BF6672B87404100D33E3B /* TestingCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218BF6662B87404100D33E3B /* TestingCollectionViewCell.swift */; };
+		218BF66A2B87405B00D33E3B /* TestingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218BF6692B87405B00D33E3B /* TestingCell.swift */; };
+		218BF66C2B87623600D33E3B /* TestingDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218BF66B2B87623600D33E3B /* TestingDetailViewController.swift */; };
+		218BF66E2B8762FF00D33E3B /* TestingDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218BF66D2B8762FF00D33E3B /* TestingDetailViewModel.swift */; };
 		2D547127E8986A18B4623053 /* Pods_NeoTour.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5EC365AACF0F571031CF9F9 /* Pods_NeoTour.framework */; };
 /* End PBXBuildFile section */
 
@@ -53,6 +62,15 @@
 		218BF6512B83E10700D33E3B /* TestingMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestingMainViewController.swift; sourceTree = "<group>"; };
 		218BF6532B83E11E00D33E3B /* TestingMainViewModel .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TestingMainViewModel .swift"; sourceTree = "<group>"; };
 		218BF6562B83E86200D33E3B /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
+		218BF6582B85348400D33E3B /* TourDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourDetailsViewController.swift; sourceTree = "<group>"; };
+		218BF65A2B85349300D33E3B /* TourDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourDetailsViewModel.swift; sourceTree = "<group>"; };
+		218BF65E2B85359A00D33E3B /* TourDetailsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourDetailsCell.swift; sourceTree = "<group>"; };
+		218BF6602B8535B300D33E3B /* TourDeatilsCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourDeatilsCollectionCell.swift; sourceTree = "<group>"; };
+		218BF6642B8544ED00D33E3B /* ReviewsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewsModel.swift; sourceTree = "<group>"; };
+		218BF6662B87404100D33E3B /* TestingCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestingCollectionViewCell.swift; sourceTree = "<group>"; };
+		218BF6692B87405B00D33E3B /* TestingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestingCell.swift; sourceTree = "<group>"; };
+		218BF66B2B87623600D33E3B /* TestingDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestingDetailViewController.swift; sourceTree = "<group>"; };
+		218BF66D2B8762FF00D33E3B /* TestingDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestingDetailViewModel.swift; sourceTree = "<group>"; };
 		4F11135C3603ACB980474C47 /* Pods-NeoTour.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NeoTour.debug.xcconfig"; path = "Target Support Files/Pods-NeoTour/Pods-NeoTour.debug.xcconfig"; sourceTree = "<group>"; };
 		D11763E5D97D13189F67E7A7 /* Pods-NeoTour.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NeoTour.release.xcconfig"; path = "Target Support Files/Pods-NeoTour/Pods-NeoTour.release.xcconfig"; sourceTree = "<group>"; };
 		F5EC365AACF0F571031CF9F9 /* Pods_NeoTour.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NeoTour.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -123,7 +141,7 @@
 		2132184C2B7BDD680027E828 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				213218582B7BFDB70027E828 /* PlaceWorkFlow */,
+				213218582B7BFDB70027E828 /* DetailsWorkFlow */,
 				213218552B7BFD810027E828 /* MainWorkFlow */,
 				2132184D2B7BDD9F0027E828 /* OnboardingWorkFlow */,
 				218BF6512B83E10700D33E3B /* TestingMainViewController.swift */,
@@ -208,18 +226,21 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
-		213218582B7BFDB70027E828 /* PlaceWorkFlow */ = {
+		213218582B7BFDB70027E828 /* DetailsWorkFlow */ = {
 			isa = PBXGroup;
 			children = (
+				218BF65C2B85350D00D33E3B /* UIComponents */,
 				2132185A2B7BFDCD0027E828 /* ViewModel */,
 				213218592B7BFDC90027E828 /* View */,
 			);
-			path = PlaceWorkFlow;
+			path = DetailsWorkFlow;
 			sourceTree = "<group>";
 		};
 		213218592B7BFDC90027E828 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				218BF6582B85348400D33E3B /* TourDetailsViewController.swift */,
+				218BF66B2B87623600D33E3B /* TestingDetailViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -227,6 +248,8 @@
 		2132185A2B7BFDCD0027E828 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				218BF65A2B85349300D33E3B /* TourDetailsViewModel.swift */,
+				218BF66D2B8762FF00D33E3B /* TestingDetailViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -261,6 +284,7 @@
 			children = (
 				218BF6432B7E189700D33E3B /* ToursCategoryModel.swift */,
 				218BF6482B7F341000D33E3B /* TourModel.swift */,
+				218BF6642B8544ED00D33E3B /* ReviewsModel.swift */,
 			);
 			path = LocalData;
 			sourceTree = "<group>";
@@ -298,6 +322,33 @@
 				218BF64F2B80916600D33E3B /* RecommendedToursCollectionCell.swift */,
 			);
 			path = RecommendedToursCell;
+			sourceTree = "<group>";
+		};
+		218BF65C2B85350D00D33E3B /* UIComponents */ = {
+			isa = PBXGroup;
+			children = (
+				218BF6682B87404600D33E3B /* Testing  */,
+				218BF65D2B85354500D33E3B /* TourDetailsCell */,
+			);
+			path = UIComponents;
+			sourceTree = "<group>";
+		};
+		218BF65D2B85354500D33E3B /* TourDetailsCell */ = {
+			isa = PBXGroup;
+			children = (
+				218BF65E2B85359A00D33E3B /* TourDetailsCell.swift */,
+				218BF6602B8535B300D33E3B /* TourDeatilsCollectionCell.swift */,
+			);
+			path = TourDetailsCell;
+			sourceTree = "<group>";
+		};
+		218BF6682B87404600D33E3B /* Testing  */ = {
+			isa = PBXGroup;
+			children = (
+				218BF6692B87405B00D33E3B /* TestingCell.swift */,
+				218BF6662B87404100D33E3B /* TestingCollectionViewCell.swift */,
+			);
+			path = "Testing ";
 			sourceTree = "<group>";
 		};
 		D0E61BBB73E9A9D7AC539A7C /* Pods */ = {
@@ -433,18 +484,27 @@
 			buildActionMask = 2147483647;
 			files = (
 				213218602B7CF5880027E828 /* AppCoordinator.swift in Sources */,
+				218BF6592B85348400D33E3B /* TourDetailsViewController.swift in Sources */,
 				218BF6492B7F341000D33E3B /* TourModel.swift in Sources */,
 				218BF6442B7E189700D33E3B /* ToursCategoryModel.swift in Sources */,
+				218BF65F2B85359A00D33E3B /* TourDetailsCell.swift in Sources */,
+				218BF6672B87404100D33E3B /* TestingCollectionViewCell.swift in Sources */,
+				218BF66C2B87623600D33E3B /* TestingDetailViewController.swift in Sources */,
 				218BF64B2B7F358E00D33E3B /* TourCollectionViewCell.swift in Sources */,
 				213218532B7BEC550027E828 /* NetworkLayer.swift in Sources */,
 				218BF6542B83E11E00D33E3B /* TestingMainViewModel .swift in Sources */,
+				218BF66E2B8762FF00D33E3B /* TestingDetailViewModel.swift in Sources */,
 				218BF6572B83E86200D33E3B /* HeaderView.swift in Sources */,
 				2132183A2B7BC15F0027E828 /* OnboardingViewController.swift in Sources */,
 				213218362B7BC15F0027E828 /* AppDelegate.swift in Sources */,
+				218BF65B2B85349300D33E3B /* TourDetailsViewModel.swift in Sources */,
 				213218382B7BC15F0027E828 /* SceneDelegate.swift in Sources */,
 				218BF6472B7E1A5C00D33E3B /* ToursCategoryCollectionViewCell.swift in Sources */,
+				218BF6612B8535B300D33E3B /* TourDeatilsCollectionCell.swift in Sources */,
 				213218622B7CFE950027E828 /* OnboardingViewModel .swift in Sources */,
 				2132185E2B7CF5550027E828 /* ReuseIdentifying.swift in Sources */,
+				218BF66A2B87405B00D33E3B /* TestingCell.swift in Sources */,
+				218BF6652B8544ED00D33E3B /* ReviewsModel.swift in Sources */,
 				218BF6522B83E10700D33E3B /* TestingMainViewController.swift in Sources */,
 				218BF6322B7DF35600D33E3B /* MainViewController.swift in Sources */,
 				218BF6342B7DF36800D33E3B /* MainViewModel.swift in Sources */,
