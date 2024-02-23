@@ -20,16 +20,16 @@ class TourDetailsCell: UICollectionViewCell, ReuseIdentifying {
     
     private lazy var userNameLabel: UILabel = {
         var label = UILabel()
-        label.font = .systemFont(ofSize: 16, weight: .medium)
-        label.textColor = UIColor.white
+        label.font = UIFont(name: "Avenir Next", size: 16)
+        label.textColor = UIColor.black
         label.text = "Anonymous"
         return label
     }()
     
     private lazy var userReview: UILabel = {
         var label = UILabel()
-        label.font = .systemFont(ofSize: 16, weight: .medium)
-        label.textColor = UIColor.white
+        label.font = UIFont(name: "Avenir Next", size: 16)
+        label.textColor = UIColor.black
         label.text = "Good good good good good111 Good good good good good Good good good good good "
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
@@ -41,7 +41,7 @@ class TourDetailsCell: UICollectionViewCell, ReuseIdentifying {
         let circleView = UIView()
         circleView.translatesAutoresizingMaskIntoConstraints = false
 //        circleView.layer.cornerRadius = 410 / 10
-        circleView.backgroundColor = .red
+//        circleView.backgroundColor = .red
         return circleView
     }()
     
@@ -102,7 +102,7 @@ extension TourDetailsCell {
         
         userReview.snp.makeConstraints {
             $0.top.equalToSuperview().offset(40)
-            $0.left.equalToSuperview().offset(16)
+            $0.left.equalToSuperview()
             $0.right.equalToSuperview().offset(-16)
             $0.width.equalTo(385)
             $0.height.equalTo(90)

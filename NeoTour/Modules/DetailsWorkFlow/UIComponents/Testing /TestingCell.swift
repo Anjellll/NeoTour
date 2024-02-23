@@ -83,6 +83,7 @@ extension TestingCell {
         stackView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(10)
             $0.left.equalToSuperview().offset(16)
+            $0.right.equalToSuperview().offset(-16)
             $0.width.equalTo(385)
             $0.height.equalTo(150)
         }
@@ -102,8 +103,8 @@ extension TestingCell {
         
         userReview.snp.makeConstraints {
             $0.top.equalTo(userNameLabel.snp.bottom).inset(15)
-            $0.left.equalToSuperview().offset(16)
-            $0.width.equalTo(385)
+            $0.left.equalToSuperview()
+            $0.width.equalTo(360)
             $0.height.equalTo(90)
         }
     }

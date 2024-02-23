@@ -14,8 +14,8 @@ class TestingDetailViewController: UIViewController {
     private var tour: TourModel?
     
     private var reviewData: [ReviewsModel] = [
-    ReviewsModel(userIcon: "userIcon", userName: "Anonymous", userReview: "Good good good good good Good good good good goodGood good good good good Good good good good good Good good good good good Good good good good good Good good good good good Good good good good good"),
-    ReviewsModel(userIcon: "userIcon", userName: "Anonymous2", userReview: "Good good good good good Good good good good good Good good good good good"),
+    ReviewsModel(userIcon: "userIcon", userName: "Anonymous", userReview: "That was such a nice place. The most beautiful place I’ve ever seen. My advice to everyone not to forget to take warm coat"),
+    ReviewsModel(userIcon: "userIcon", userName: "Anonymous2", userReview: "That was such a nice place. The most beautiful place I’ve ever seen. My advice to everyone not to forget to take warm coat"),
     ReviewsModel(userIcon: "userIcon", userName: "Anonymous3", userReview: "Good good good good good Good good good good goodGood good good good good Good good good good good Good good good good good Good good good good good Good good good good good Good good good good good")
     ]
     
@@ -38,7 +38,7 @@ class TestingDetailViewController: UIViewController {
     
     private lazy var placeNameLabel: UILabel = {
         var label = UILabel()
-        label.font = .systemFont(ofSize: 24, weight: .medium)
+        label.font = UIFont(name: "Avenir Next Bold", size: 24)
         label.textColor = UIColor.black
         label.text = tour?.name ?? "Bishkek"
         return label
@@ -46,7 +46,7 @@ class TestingDetailViewController: UIViewController {
     
     private lazy var placeLocationLabel: UILabel = {
         var label = UILabel()
-        label.font = .systemFont(ofSize: 12, weight: .medium)
+        label.font = UIFont(name: "Avenir Next", size: 12)
         label.textColor = UIColor.black
         label.text = "New York"
         return label
@@ -62,7 +62,7 @@ class TestingDetailViewController: UIViewController {
     
     private lazy var descriptionLabel: UILabel = {
         var label = UILabel()
-        label.font = .systemFont(ofSize: 20, weight: .medium)
+        label.font = UIFont(name: "Avenir Next Bold", size: 20)
         label.textColor = UIColor.black
         label.text = "Description"
         return label
@@ -70,27 +70,27 @@ class TestingDetailViewController: UIViewController {
     
     private lazy var descriptionTourLabel: UILabel = {
         var label = UILabel()
-        label.font = .systemFont(ofSize: 16, weight: .medium)
+        label.font = UIFont(name: "Avenir Next", size: 16)
         label.textColor = UIColor.black
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         label.textAlignment = .left
         label.text =
         """
-        kmlmfvklvmfrkl klmvlrkmflkr lkrfmlk jhkjb  fre f
-        kmfrk jjjjj kkkkk llll krefmr fffn  fre fr rfe
-        kmfr  mmm mmm ooo lkmf fffff  ref  fre f  f re
-        pppp llll kkk ffff rrrr tttt eee ddd fref  ferf
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Dignissim eget amet viverra eget fame
+        rhoncus. Eget enim venenatis enim porta egestas malesuada et.
+        Consequat mauris lacus euismod montes.
         """
         return label
     }()
     
     private lazy var reviewsLabel: UILabel = {
         var label = UILabel()
-        label.font = .systemFont(ofSize: 20, weight: .medium)
+        label.font = UIFont(name: "Avenir Next Bold", size: 20)
         label.textColor = UIColor.black
         label.text = "Reviews"
-        label.backgroundColor = .cyan
+//        label.backgroundColor = .cyan
         return label
     }()
     
@@ -98,8 +98,22 @@ class TestingDetailViewController: UIViewController {
         let circleView = UIView()
         circleView.translatesAutoresizingMaskIntoConstraints = false
         circleView.layer.cornerRadius = 410 / 10
-//        circleView.backgroundColor = .red
+        circleView.backgroundColor = .white
         return circleView
+    }()
+    
+    private let bookNowButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Book Now", for: .normal)
+        button.backgroundColor = UIColor(red: 106/255,
+                                         green: 98/255,
+                                         blue: 183/255,
+                                         alpha: 1)
+        button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 25
+        button.addTarget(self, action: #selector(bookNowButtonTapped), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
     }()
     
     lazy var baseCollectionView: UICollectionView = {
@@ -110,7 +124,7 @@ class TestingDetailViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.translatesAutoresizingMaskIntoConstraints =  false
-        collectionView.backgroundColor = .green
+//        collectionView.backgroundColor = .green
         return collectionView
     }()
     
@@ -130,6 +144,10 @@ class TestingDetailViewController: UIViewController {
         baseCollectionView.delegate = self
         baseCollectionView.dataSource = self
     }
+    
+    @objc func bookNowButtonTapped() {
+        coordinator?.bookNowButtonTapped()
+    }
 }
 
 extension TestingDetailViewController {
@@ -141,6 +159,7 @@ extension TestingDetailViewController {
     private func setUpSubviews() {
         view.addSubview(baseCollectionView)
 //        addSubview(verticelStack)
+        view.addSubview(bookNowButton)
         
       
        
@@ -159,8 +178,16 @@ extension TestingDetailViewController {
     
     private func setUpConstraints() {
         baseCollectionView.snp.makeConstraints { maker in
-            maker.top.equalTo(reviewsLabel.snp.bottom).offset(3)
+            maker.top.equalTo(reviewsLabel.snp.bottom)
             maker.leading.trailing.bottom.equalToSuperview()
+        }
+        
+        bookNowButton.snp.makeConstraints { make in
+            make.bottom.equalToSuperview().offset(-32)
+            make.leading.equalToSuperview().offset(16)
+            make.trailing.equalToSuperview().offset(-16)
+            make.height.equalTo(50)
+            make.width.equalTo(385)
         }
 
         placeImage.snp.makeConstraints { make in
@@ -186,14 +213,14 @@ extension TestingDetailViewController {
         }
 
         placeLocationLabel.snp.makeConstraints { make in
-            make.top.equalTo(placeNameLabel.snp.bottom).offset(12)
+            make.top.equalTo(placeNameLabel.snp.bottom).offset(8)
             make.leading.equalTo(placeLocationIcon.snp.trailing).offset(8)
             make.height.equalTo(14)
             make.width.equalTo(78)
         }
         
         placeLocationIcon.snp.makeConstraints { make in
-            make.top.equalTo(placeNameLabel.snp.bottom).offset(12)
+            make.top.equalTo(placeNameLabel.snp.bottom).offset(8)
             make.height.width.equalTo(14)
             make.leading.equalToSuperview().offset(16)
         }
@@ -240,3 +267,7 @@ extension TestingDetailViewController: UICollectionViewDataSource, UICollectionV
         CGSize(width: 386, height: 120)
     }
 }
+
+
+
+   

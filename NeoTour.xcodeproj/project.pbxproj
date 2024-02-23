@@ -36,6 +36,8 @@
 		218BF66A2B87405B00D33E3B /* TestingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218BF6692B87405B00D33E3B /* TestingCell.swift */; };
 		218BF66C2B87623600D33E3B /* TestingDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218BF66B2B87623600D33E3B /* TestingDetailViewController.swift */; };
 		218BF66E2B8762FF00D33E3B /* TestingDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218BF66D2B8762FF00D33E3B /* TestingDetailViewModel.swift */; };
+		218BF6732B87E86A00D33E3B /* PopUpInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218BF6722B87E86A00D33E3B /* PopUpInformationViewController.swift */; };
+		218BF6762B87E87E00D33E3B /* PopUpInformationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218BF6752B87E87E00D33E3B /* PopUpInformationViewModel.swift */; };
 		2D547127E8986A18B4623053 /* Pods_NeoTour.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5EC365AACF0F571031CF9F9 /* Pods_NeoTour.framework */; };
 /* End PBXBuildFile section */
 
@@ -71,6 +73,8 @@
 		218BF6692B87405B00D33E3B /* TestingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestingCell.swift; sourceTree = "<group>"; };
 		218BF66B2B87623600D33E3B /* TestingDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestingDetailViewController.swift; sourceTree = "<group>"; };
 		218BF66D2B8762FF00D33E3B /* TestingDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestingDetailViewModel.swift; sourceTree = "<group>"; };
+		218BF6722B87E86A00D33E3B /* PopUpInformationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpInformationViewController.swift; sourceTree = "<group>"; };
+		218BF6752B87E87E00D33E3B /* PopUpInformationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpInformationViewModel.swift; sourceTree = "<group>"; };
 		4F11135C3603ACB980474C47 /* Pods-NeoTour.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NeoTour.debug.xcconfig"; path = "Target Support Files/Pods-NeoTour/Pods-NeoTour.debug.xcconfig"; sourceTree = "<group>"; };
 		D11763E5D97D13189F67E7A7 /* Pods-NeoTour.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NeoTour.release.xcconfig"; path = "Target Support Files/Pods-NeoTour/Pods-NeoTour.release.xcconfig"; sourceTree = "<group>"; };
 		F5EC365AACF0F571031CF9F9 /* Pods_NeoTour.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NeoTour.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -141,6 +145,7 @@
 		2132184C2B7BDD680027E828 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				218BF66F2B87E83200D33E3B /* PopUpInformationWorkFlow */,
 				213218582B7BFDB70027E828 /* DetailsWorkFlow */,
 				213218552B7BFD810027E828 /* MainWorkFlow */,
 				2132184D2B7BDD9F0027E828 /* OnboardingWorkFlow */,
@@ -351,6 +356,31 @@
 			path = "Testing ";
 			sourceTree = "<group>";
 		};
+		218BF66F2B87E83200D33E3B /* PopUpInformationWorkFlow */ = {
+			isa = PBXGroup;
+			children = (
+				218BF6712B87E85200D33E3B /* ViewModel */,
+				218BF6702B87E84D00D33E3B /* View */,
+			);
+			path = PopUpInformationWorkFlow;
+			sourceTree = "<group>";
+		};
+		218BF6702B87E84D00D33E3B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				218BF6722B87E86A00D33E3B /* PopUpInformationViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		218BF6712B87E85200D33E3B /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				218BF6752B87E87E00D33E3B /* PopUpInformationViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		D0E61BBB73E9A9D7AC539A7C /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -487,7 +517,9 @@
 				218BF6592B85348400D33E3B /* TourDetailsViewController.swift in Sources */,
 				218BF6492B7F341000D33E3B /* TourModel.swift in Sources */,
 				218BF6442B7E189700D33E3B /* ToursCategoryModel.swift in Sources */,
+				218BF6762B87E87E00D33E3B /* PopUpInformationViewModel.swift in Sources */,
 				218BF65F2B85359A00D33E3B /* TourDetailsCell.swift in Sources */,
+				218BF6732B87E86A00D33E3B /* PopUpInformationViewController.swift in Sources */,
 				218BF6672B87404100D33E3B /* TestingCollectionViewCell.swift in Sources */,
 				218BF66C2B87623600D33E3B /* TestingDetailViewController.swift in Sources */,
 				218BF64B2B7F358E00D33E3B /* TourCollectionViewCell.swift in Sources */,

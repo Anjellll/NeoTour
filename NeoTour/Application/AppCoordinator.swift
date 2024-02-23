@@ -28,4 +28,22 @@ final class AppCoordinator {
         let mainViewController = TourDetailsViewController(viewModel: mainViewModel)
         window?.rootViewController = mainViewController
     }
+    
+    func bookNowButtonTapped() {
+        let viewModel = PopUpInformationViewModel()
+        let viewController = PopUpInformationViewController(viewModel: viewModel)
+        
+        if let sheet = viewController.sheetPresentationController {
+            sheet.detents = [.medium()]
+            sheet.prefersGrabberVisible = true
+        }
+        
+        if let rootViewController = UIApplication.shared.keyWindow?.rootViewController {
+            rootViewController.present(viewController, animated: true, completion: nil)
+        }
+        // или, если вы хотите установить его как rootViewController
+        // UIApplication.shared.keyWindow?.rootViewController = viewController
+    }
 }
+
+
