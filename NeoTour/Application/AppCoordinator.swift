@@ -36,6 +36,7 @@ final class AppCoordinator {
         if let sheet = viewController.sheetPresentationController {
             sheet.detents = [.medium()]
             sheet.prefersGrabberVisible = true
+            sheet.preferredCornerRadius = 20
         }
         
         if let rootViewController = UIApplication.shared.keyWindow?.rootViewController {

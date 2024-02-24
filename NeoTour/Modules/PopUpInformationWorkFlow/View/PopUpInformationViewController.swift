@@ -10,7 +10,13 @@ import UIKit
 class PopUpInformationViewController: UIViewController {
 
     private var viewModel: PopUpInformationViewModel
-    let genderOptions = ["+996","+7","+8"]    // ADD
+    let tableView = UITableView()
+    let codeOptions = ["+996","+7","+8"]
+    let flagImages = [
+        "+996": UIImage(named: "flag_kg"),
+        "+7": UIImage(named: "flag_ru"),
+        "+8": UIImage(named: "flag_kz")
+    ]
     var isDropdownVisible = false
     
     init(viewModel: PopUpInformationViewModel) {
@@ -60,13 +66,44 @@ class PopUpInformationViewController: UIViewController {
         textField.textContentType = .init(rawValue: "")
         textField.layer.cornerRadius = 50 / 2
         textField.layer.borderWidth = 1
-        textField.layer.borderColor =  UIColor(red: 0.712, green: 0.712, blue: 0.712, alpha: 1).cgColor
-        textField.textColor = UIColor(red: 0.008, green: 0.196, blue: 0.275, alpha: 1)
+        textField.layer.borderColor = UIColor(red: 0.712, green: 0.712, blue: 0.712, alpha: 1).cgColor
+        textField.textColor = .black
         textField.isUserInteractionEnabled = true
+
+        let leftPadding = UIView(frame: CGRect(x: 0, y: 0, width: 125, height: textField.frame.height))
+        textField.leftView = leftPadding
+        textField.leftViewMode = .always
+
+        let rightPadding = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: textField.frame.height))
+        textField.rightView = rightPadding
+        textField.rightViewMode = .always
+
         return textField
     }()
+
+    private lazy var countryImage: UIImageView = {
+        var image = UIImageView()
+        image.contentMode = .scaleAspectFit
+        image.clipsToBounds = true
+        image.image = UIImage(named: "flag_kg")
+        return image
+    }()
     
+    private var arrowIconButton: UIButton = {
+       let button = UIButton()
+        let image = UIImage(named: "arrowIcon")
+        button.setBackgroundImage(image, for: .normal)
+        button.addTarget(self, action: #selector(showSmallView), for: .touchUpInside)
+        return button
+    }()
     
+    private var inputLabel: UILabel = {
+        let label = UILabel()
+        label.text = "+996"
+        label.textColor = .black
+        label.font = UIFont(name: "Avenir Next", size: 16)
+       return label
+    }()
     
     private lazy var commentariesLabel: UILabel = {
         let label = UILabel()
@@ -84,8 +121,14 @@ class PopUpInformationViewController: UIViewController {
         textField.layer.cornerRadius = 50 / 2
         textField.layer.borderWidth = 1
         textField.layer.borderColor =  UIColor(red: 0.712, green: 0.712, blue: 0.712, alpha: 1).cgColor
-        textField.textColor = UIColor(red: 0.008, green: 0.196, blue: 0.275, alpha: 1)
+        textField.textColor = .black
         textField.isUserInteractionEnabled = true
+        let leftPadding = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: textField.frame.height))
+        textField.leftView = leftPadding
+        textField.leftViewMode = .always
+        let rightPadding = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: textField.frame.height))
+        textField.rightView = rightPadding
+        textField.rightViewMode = .always
         return textField
     }()
     
@@ -114,7 +157,6 @@ class PopUpInformationViewController: UIViewController {
     
     private lazy var numberOfPeoopleLabel: UILabel = {
         let label = UILabel()
-//        label.textAlignment = .center
         label.font = UIFont(name: "Avenir Next Bold", size: 16)
         label.textColor = .black
         label.text = "5"
@@ -160,7 +202,7 @@ class PopUpInformationViewController: UIViewController {
         return label
     }()
     
-    private let submitButton: UIButton = {  // CHANGE CONSTRAINTS!!!!
+    private let submitButton: UIButton = {
         let button = UIButton()
         button.setTitle("Submit", for: .normal)
         button.backgroundColor = UIColor(red: 106/255,
@@ -178,6 +220,37 @@ class PopUpInformationViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         setUpUI()
+        configTableView()
+    }
+    
+    @objc func showSmallView() {
+        isDropdownVisible.toggle()
+
+        tableView.isHidden = !isDropdownVisible
+        tableView.reloadData()
+
+        commentariesTF.isUserInteractionEnabled = !isDropdownVisible
+
+        if isDropdownVisible {
+            tableView.snp.updateConstraints { make in
+                make.height.equalTo(130)
+            }
+        } else {
+            tableView.snp.updateConstraints { make in
+                make.height.equalTo(0)
+            }
+        }
+
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
+    }
+
+    func configTableView() {
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        tableView.isHidden = true
     }
 }
 
@@ -188,10 +261,14 @@ extension PopUpInformationViewController {
     }
     
     private func setUpSubviews() {
+        view.addSubview(tableView)
         view.addSubview(infoTitleLabel)
         view.addSubview(reservationInfoLabel)
         view.addSubview(phoneNumberLabel)
         view.addSubview(phoneNumberTF)
+        phoneNumberTF.addSubview(countryImage)
+        phoneNumberTF.addSubview(arrowIconButton)
+        phoneNumberTF.addSubview(inputLabel)
         view.addSubview(commentariesLabel)
         view.addSubview(commentariesTF)
         view.addSubview(numberOfPeopleLabel)
@@ -208,6 +285,13 @@ extension PopUpInformationViewController {
     }
     
     private func setUpConstraints() {
+        tableView.snp.makeConstraints { make in
+            make.top.equalTo(inputLabel.snp.bottom).offset(16)
+            make.leading.equalTo(view.safeAreaLayoutGuide).offset(20)
+            make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-220)
+            make.height.equalTo(0) // Высота будет меняться в зависимости от состояния шторки
+        }
+        
         infoTitleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(15)
             $0.leading.equalToSuperview().inset(20)
@@ -235,6 +319,25 @@ extension PopUpInformationViewController {
             $0.trailing.equalToSuperview().offset(-20)
             $0.width.equalTo(370)
             $0.height.equalTo(50)
+        }
+        
+        countryImage.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(12)
+            $0.leading.equalToSuperview().inset(16)
+            $0.width.height.equalTo(24)
+        }
+        
+        arrowIconButton.snp.makeConstraints {
+            $0.centerY.equalTo(countryImage)
+            $0.leading.equalTo(countryImage.snp.trailing).offset(8)
+            $0.width.height.equalTo(24)
+        }
+        
+        inputLabel.snp.makeConstraints {
+            $0.centerY.equalTo(countryImage)
+            $0.leading.equalTo(countryImage.snp.trailing).offset(40)
+            $0.height.equalTo(18)
+            $0.width.equalTo(70)
         }
         
         commentariesLabel.snp.makeConstraints {
@@ -300,7 +403,7 @@ extension PopUpInformationViewController {
             $0.height.equalTo(19)
         }
         
-        submitButton.snp.makeConstraints { make in  // CHANGE CONSTRAINTS!!!!
+        submitButton.snp.makeConstraints { make in
             make.bottom.equalToSuperview().offset(-20)
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().offset(-20)
@@ -308,4 +411,36 @@ extension PopUpInformationViewController {
             make.width.equalTo(375)
         }
     }
+}
+
+extension PopUpInformationViewController: UITableViewDataSource, UITableViewDelegate{
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return codeOptions.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        cell.backgroundColor = .systemGray
+
+        let code = codeOptions[indexPath.row]
+        cell.textLabel?.text = code
+
+        if let flagImage = flagImages[code] {
+            cell.imageView?.image = flagImage
+        } else {
+            cell.imageView?.image = UIImage(named: "flag_kg")
+        }
+
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedCode = codeOptions[indexPath.row]
+        inputLabel.text = selectedCode
+        showSmallView()
+        if let flagImage = flagImages[selectedCode] {
+            countryImage.image = flagImage
+        }
+    }
+
 }
