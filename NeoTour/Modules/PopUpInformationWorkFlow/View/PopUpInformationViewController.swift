@@ -11,11 +11,11 @@ class PopUpInformationViewController: UIViewController {
 
     private var viewModel: PopUpInformationViewModel
     let tableView = UITableView()
-    let codeOptions = ["+996","+7","+8"]
+    let codeOptions = ["+996","+7","+7"]
     let flagImages = [
         "+996": UIImage(named: "flag_kg"),
         "+7": UIImage(named: "flag_ru"),
-        "+8": UIImage(named: "flag_kz")
+        "+7": UIImage(named: "flag_kz")
     ]
     var isDropdownVisible = false
     
@@ -488,7 +488,7 @@ extension PopUpInformationViewController: UITableViewDataSource, UITableViewDele
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.backgroundColor = .white
+        cell.backgroundColor = .systemGray2
 
         let code = codeOptions[indexPath.row]
         cell.textLabel?.text = code
