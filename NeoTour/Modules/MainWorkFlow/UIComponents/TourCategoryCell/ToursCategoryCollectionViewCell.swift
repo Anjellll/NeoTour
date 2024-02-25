@@ -9,6 +9,8 @@ import UIKit
 
 class ToursCategoryCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
     
+    var tourCategory: CategoryDTO?
+    
     lazy var categoryLabel: UILabel = {
         var label = UILabel()
         label.font = UIFont(name: "Avenir Next", size: 16)
@@ -31,8 +33,15 @@ class ToursCategoryCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
         setUpUI()
     }
     
-    func displayInfo(tours: ToursCategoryModel) {
-        categoryLabel.text = tours.name
+    func displayInfo(tours: CategoryDTO) {
+        self.tourCategory = tours
+        
+        if let name = tours.categoryName {
+            categoryLabel.text = name
+        } else {
+            categoryLabel.text = "N/A"
+        }
+        
     }
     
     required init?(coder aDecoder: NSCoder) {

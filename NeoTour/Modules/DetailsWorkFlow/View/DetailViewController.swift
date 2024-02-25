@@ -1,5 +1,5 @@
 //
-//  TestingDetailViewController.swift
+//  DetailViewController.swift
 //  NeoTour
 //
 //  Created by anjella on 22/2/24.
@@ -7,11 +7,11 @@
 
 import UIKit
 
-class TestingDetailViewController: UIViewController {
+class DetailViewController: UIViewController {
 
-    private var viewModel: TestingDetailViewModel
+    var viewModel: DetailViewModel
     weak var coordinator: AppCoordinator?
-    private var tour: TourModel?
+    var tour: TourDTO?
     
     private var reviewData: [ReviewsModel] = [
     ReviewsModel(userIcon: "userIcon", userName: "Anonymous", userReview: "That was such a nice place. The most beautiful place I’ve ever seen. My advice to everyone not to forget to take warm coat"),
@@ -19,7 +19,7 @@ class TestingDetailViewController: UIViewController {
     ReviewsModel(userIcon: "userIcon", userName: "Anonymous3", userReview: "Good good good good good Good good good good goodGood good good good good Good good good good good Good good good good good Good good good good good Good good good good good Good good good good good")
     ]
     
-    init(viewModel: TestingDetailViewModel) {
+    init(viewModel: DetailViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -28,7 +28,7 @@ class TestingDetailViewController: UIViewController {
         var image = UIImageView()
         image.contentMode = .scaleAspectFill
         image.clipsToBounds = true
-        if let imageName = tour?.image {
+        if let imageName = viewModel.tourImage {
             image.image = UIImage(named: imageName)
         } else {
             image.image = UIImage(named: "placeImage2")
@@ -40,7 +40,7 @@ class TestingDetailViewController: UIViewController {
         var label = UILabel()
         label.font = UIFont(name: "Avenir Next Bold", size: 24)
         label.textColor = UIColor.black
-        label.text = tour?.name ?? "Bishkek"
+        label.text = viewModel.tourName ?? "Default Name"
         return label
     }()
     
@@ -102,7 +102,7 @@ class TestingDetailViewController: UIViewController {
         return circleView
     }()
     
-    private let bookNowButton: UIButton = {
+    lazy var bookNowButton: UIButton = {
         let button = UIButton()
         button.setTitle("Book Now", for: .normal)
         button.backgroundColor = UIColor(red: 106/255,
@@ -113,6 +113,7 @@ class TestingDetailViewController: UIViewController {
         button.layer.cornerRadius = 25
         button.addTarget(self, action: #selector(bookNowButtonTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.isUserInteractionEnabled = true
         return button
     }()
     
@@ -131,7 +132,7 @@ class TestingDetailViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+//    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpUI()
@@ -147,10 +148,12 @@ class TestingDetailViewController: UIViewController {
     
     @objc func bookNowButtonTapped() {
         coordinator?.bookNowButtonTapped()
+        print(bookNowButton.actions(forTarget: self, forControlEvent: .touchUpInside) ?? "No actions")
+
     }
 }
 
-extension TestingDetailViewController {
+extension DetailViewController {
     private func setUpUI() {
         setUpSubviews()
         setUpConstraints()
@@ -158,16 +161,10 @@ extension TestingDetailViewController {
     
     private func setUpSubviews() {
         view.addSubview(baseCollectionView)
-//        addSubview(verticelStack)
         view.addSubview(bookNowButton)
-        
-      
-       
         placeImage.addSubview(contentViewTesting)
         view.addSubview(placeNameLabel)
         view.addSubview(placeImage)
-//        addSubview(contentViewTesting)
-//        placeImage.addSubview(contentViewTesting)
         
         view.addSubview(placeLocationLabel)
         view.addSubview(placeLocationIcon)
@@ -246,12 +243,10 @@ extension TestingDetailViewController {
             make.width.equalTo(1002)
             make.leading.equalToSuperview().offset(16)
         }
-        
-//        verticelStack.setCustomSpacing(15, after: placeImage)
     }
 }
 
-extension TestingDetailViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout  {
+extension DetailViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout  {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return reviewData.count
     }

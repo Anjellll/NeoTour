@@ -22,8 +22,11 @@ class PopUpInformationViewController: UIViewController {
     init(viewModel: PopUpInformationViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        self.viewModel.showAlertClosure = { [weak self] in
+            self?.showAlert()
+        }
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -151,7 +154,7 @@ class PopUpInformationViewController: UIViewController {
                                           blue: 183/255,
                                           alpha: 1)
         button.layer.cornerRadius = 14
-//        button.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -159,7 +162,7 @@ class PopUpInformationViewController: UIViewController {
         let label = UILabel()
         label.font = UIFont(name: "Avenir Next Bold", size: 16)
         label.textColor = .black
-        label.text = "5"
+        label.text = "\(viewModel.currentPeopleCount)"
         return label
     }()
     
@@ -174,7 +177,7 @@ class PopUpInformationViewController: UIViewController {
                                           blue: 183/255,
                                           alpha: 1)
         button.layer.cornerRadius = 14
-//        button.addTarget(self, action: #selector(minusButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(minusButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -198,7 +201,7 @@ class PopUpInformationViewController: UIViewController {
         let label = UILabel()
         label.font = UIFont(name: "Avenir Next", size: 16)
         label.textColor = .black
-        label.text = "5 people"
+        label.text = "\(viewModel.currentPeopleCount) people"
         return label
     }()
     
@@ -211,7 +214,7 @@ class PopUpInformationViewController: UIViewController {
                                          alpha: 1)
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 25
-//        button.addTarget(self, action: #selector(bookNowButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(submitButtonTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -221,6 +224,43 @@ class PopUpInformationViewController: UIViewController {
         view.backgroundColor = .white
         setUpUI()
         configTableView()
+        setupUI()
+    }
+    
+    private func setupUI() {
+       
+        phoneNumberTF.addTarget(self, action: #selector(phoneNumberDidChange), for: .editingChanged)
+        commentariesTF.addTarget(self, action: #selector(commentariesDidChange), for: .editingChanged)
+        updateUI()
+    }
+    
+    @objc private func phoneNumberDidChange() {
+        viewModel.phoneNumberDidChange(phoneNumberTF.text ?? "")
+        updateUI()
+    }
+    
+    @objc private func commentariesDidChange() {
+        viewModel.commentariesDidChange(commentariesTF.text ?? "")
+        updateUI()
+    }
+    
+    private func updateUI() {
+        phoneNumberTF.layer.borderColor = viewModel.phoneNumberBorderColor.cgColor
+        commentariesTF.layer.borderColor = viewModel.commentariesBorderColor.cgColor
+        submitButton.isEnabled = viewModel.isSubmitButtonEnabled
+        submitButton.backgroundColor = viewModel.isSubmitButtonEnabled ?
+        UIColor(red: 106/255, green: 98/255, blue: 183/255, alpha: 1) : UIColor(red: 185/255, green: 177/255, blue: 255/255, alpha: 1)
+    }
+    
+    @objc private func submitButtonTapped() {
+        viewModel.submitButtonTapped {
+            // Можете добавить дополнительные действия после того, как данные сохранены
+        }
+    }
+    
+    private func showAlert() {
+        let viewController = AlertViewController()
+        present(viewController, animated: true, completion: nil)
     }
     
     @objc func showSmallView() {
@@ -245,7 +285,35 @@ class PopUpInformationViewController: UIViewController {
             self.view.layoutIfNeeded()
         }
     }
-
+    
+    @objc private func plusButtonTapped() {
+        viewModel.incrementPeopleCount()
+        updatePeopleCountLabel()
+        updateButtonsState()
+    }
+    
+    @objc private func minusButtonTapped() {
+        viewModel.decrementPeopleCount()
+        updatePeopleCountLabel()
+        updateButtonsState()
+    }
+    
+    private func updatePeopleCountLabel() {
+        numberOfPeoopleLabel.text = "\(viewModel.currentPeopleCount)"
+        peopleCountLabel.text = "\(viewModel.currentPeopleCount) people"
+    }
+    
+    private func updateButtonsState() {
+        plusButton.isEnabled = viewModel.isPlusButtonEnabled
+        minusButton.isEnabled = viewModel.isMinusButtonEnabled
+        
+        plusButton.backgroundColor = viewModel.isPlusButtonEnabled ?
+        UIColor(red: 106/255, green: 98/255, blue: 183/255, alpha: 1) : .gray
+        
+        minusButton.backgroundColor = viewModel.isMinusButtonEnabled ?
+        UIColor(red: 106/255, green: 98/255, blue: 183/255, alpha: 1) : .gray
+    }
+    
     func configTableView() {
         tableView.delegate = self
         tableView.dataSource = self
@@ -420,7 +488,7 @@ extension PopUpInformationViewController: UITableViewDataSource, UITableViewDele
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.backgroundColor = .systemGray
+        cell.backgroundColor = .white
 
         let code = codeOptions[indexPath.row]
         cell.textLabel?.text = code

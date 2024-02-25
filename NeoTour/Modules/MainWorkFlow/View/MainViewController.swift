@@ -2,22 +2,60 @@
 //  MainViewController.swift
 //  NeoTour
 //
-//  Created by anjella on 15/2/24.
+//  Created by anjella on 20/2/24.
 //
 
 import UIKit
 
 class MainViewController: UIViewController, ReuseIdentifying {
-
+    
+    static let sectionHeaderElementKind = "section-header-element-kin"
     private var viewModel: MainViewModel
+    weak var coordinator: AppCoordinator?
+    
+    enum Section: CaseIterable {
+        case categoryTours
+        case galeryTour
+        case recommendedTours
+    }
+    
+    enum Item: Hashable {
+        case category(CategoryDTO)
+        case galery(TourDTO)
+        case recommended(TourDTO)
+    }
+    
+    private var dataSource: UICollectionViewDiffableDataSource<Section, Item>!
+    
+    private lazy var baseCollectionView: UICollectionView = {
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
+        collectionView.register(
+            ToursCategoryCollectionViewCell.self,
+            forCellWithReuseIdentifier: ToursCategoryCollectionViewCell.reuseIdentifier
+        )
+        collectionView.register(
+            TourCollectionViewCell.self,
+            forCellWithReuseIdentifier: TourCollectionViewCell.reuseIdentifier
+        )
+        collectionView.register(HeaderView.self, forSupplementaryViewOfKind: MainViewController.sectionHeaderElementKind, withReuseIdentifier: HeaderView.reuseIdentifier)
+        collectionView.register(
+            RecommendedToursCollectionCell.self,
+            forCellWithReuseIdentifier: RecommendedToursCollectionCell.reuseIdentifier
+        )
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.indicatorStyle = .black
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.isUserInteractionEnabled = true
+        return collectionView
+    }()
     
     private var toursCategoryData: [ToursCategoryModel] = [
-    ToursCategoryModel(name: "Popular"),
-    ToursCategoryModel(name: "Featured"),
-    ToursCategoryModel(name: "Most Visited"),
-    ToursCategoryModel(name: "Europe"),
-    ToursCategoryModel(name: "Asia"),
-    ToursCategoryModel(name: "Asia")
+        ToursCategoryModel(name: "Popular"),
+        ToursCategoryModel(name: "Featured"),
+        ToursCategoryModel(name: "Most Visited"),
+        ToursCategoryModel(name: "Europe"),
+        ToursCategoryModel(name: "Asia"),
+        ToursCategoryModel(name: "Asia")
     ]
     
     private var toursData: [TourModel] = [
@@ -26,6 +64,9 @@ class MainViewController: UIViewController, ReuseIdentifying {
     TourModel(name: "Northern Mountain", image: "placeImage1"),
     TourModel(name: "Mount Fuji", image: "placeImage2")
     ]
+    
+    private var tour: [TourDTO] = []
+    private var categories: [CategoryDTO] = []
     
     init(viewModel: MainViewModel) {
         self.viewModel = viewModel
@@ -40,98 +81,67 @@ class MainViewController: UIViewController, ReuseIdentifying {
         let label = UILabel()
         label.textColor = .black
         label.text = "Discover"
-        if let font = UIFont(name: "SF-Pro-Display-Black", size: 32) {
-            label.font = font
-        } else {
-            label.font = UIFont.systemFont(ofSize: 32, weight: .bold)
-        }
+        label.font = UIFont(name: "Avenir Next Bold", size: 32)
         return label
-    }()
-    
-    private lazy var recommendedLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .black
-        label.text = "Recommended"
-        label.font = UIFont(name: "Avenir Next Bold", size: 20)
-        return label
-    }()
-    
-    private lazy var toursCategoryCollectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        layout.minimumInteritemSpacing = 10
-        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.showsHorizontalScrollIndicator = false
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.delegate = self
-        return collectionView
-    }()
-    
-    private lazy var toursCollectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.showsHorizontalScrollIndicator = false
-        collectionView.translatesAutoresizingMaskIntoConstraints =  false
-        collectionView.isPagingEnabled = true
-        return collectionView
-    }()
-    
-    private lazy var recommendedToursCollectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.showsHorizontalScrollIndicator = false
-        collectionView.translatesAutoresizingMaskIntoConstraints =  false
-        return collectionView
-    }()
-    
-    private lazy var pageControl: UIPageControl = {
-        let pageControl = UIPageControl()
-        pageControl.translatesAutoresizingMaskIntoConstraints = false
-        pageControl.currentPageIndicatorTintColor = UIColor(
-            red: CGFloat(0x6A) / 255.0,
-            green: CGFloat(0x62) / 255.0,
-            blue: CGFloat(0xB7) / 255.0,
-            alpha: 1.0)
-        pageControl.pageIndicatorTintColor = UIColor(
-            red: CGFloat(0xD0) / 255.0,
-            green: CGFloat(0xCB) / 255.0,
-            blue: CGFloat(0xFF) / 255.0,
-            alpha: 1.0)
-        pageControl.numberOfPages = toursData.count
-        return pageControl
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        baseCollectionView.delegate = self
+        baseCollectionView.dataSource = dataSource
+
     }
     
     override func loadView() {
         super.loadView()
         setUpUI()
+        configureDataSource()
+       
+        bindViewModel()
+        viewModel.fetchTour()
+        fetchCategory()
+        viewModel.fetchCategory()
+        updateCollectionView()
+    }
+    
+    private func bindViewModel() {
+        viewModel.reloadTourUI = { [weak self] in
+            guard let self = self else { return }
+            self.tour = self.viewModel.getTour()
+            self.updateCollectionView()
+        }
+    }
+    
+    private func fetchCategory() {
+        viewModel.reloadCategoryUI = { [weak self ] in
+            guard let self = self else { return }
+            self.categories = self.viewModel.getCategories()
+            self.updateCollectionView()
+        }
+    }
+    
+    private func updateCollectionView() {
+        DispatchQueue.main.async {
+            self.baseCollectionView.performBatchUpdates({
+                self.dataSource.apply(self.snapshot(), animatingDifferences: false)
+            }, completion: nil)
+        }
+    }
+    
+    private func snapshot() -> NSDiffableDataSourceSnapshot<Section, Item> {
+        var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
+        snapshot.appendSections([.categoryTours, .galeryTour, .recommendedTours])
+        snapshot.appendItems(categories.map { Item.category($0) }, toSection: .categoryTours)
+        snapshot.appendItems(tour.map { Item.galery($0) }, toSection: .galeryTour)
+        snapshot.appendItems(tour.map { Item.recommended($0) }, toSection: .recommendedTours)
+        return snapshot
     }
 }
 
 extension MainViewController {
     private func setUpUI() {
-        setUpSubviews()
-        setUpConstraints()
-        configureCollectionViews()
-    }
-    
-    private func setUpSubviews() {
         view.addSubview(discoverLabel)
-        view.addSubview(toursCategoryCollectionView)
-        view.addSubview(toursCollectionView)
-        view.addSubview(pageControl)
-        view.addSubview(recommendedLabel)
-        view.addSubview(recommendedToursCollectionView)
-    }
-    
-    private func setUpConstraints() {
         discoverLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(48)
             $0.leading.equalToSuperview().inset(16)
@@ -139,123 +149,233 @@ extension MainViewController {
             $0.height.equalTo(38)
         }
         
-        toursCategoryCollectionView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(97)
-            $0.left.equalToSuperview().offset(16)
-            $0.right.equalToSuperview().offset(-16)
-            $0.height.equalTo(39)
-        }
-        
-        toursCollectionView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(167)
-            $0.height.equalTo(254)
-            $0.leading.equalToSuperview().offset(16)
-            $0.trailing.equalToSuperview()
-        }
-        
-        pageControl.snp.makeConstraints {
+        view.addSubview(baseCollectionView)
+        baseCollectionView.snp.makeConstraints {
+            $0.top.equalTo(discoverLabel.snp.bottom).offset(5)
             $0.leading.trailing.equalToSuperview()
-            $0.top.equalToSuperview().offset(430)
-            $0.height.equalTo(23)
+            $0.bottom.equalToSuperview()
         }
-        
-        recommendedLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(475)
-            $0.leading.equalToSuperview().inset(16)
-            $0.width.equalTo(149)
-            $0.height.equalTo(24)
+    }
+}
+
+extension MainViewController {
+    private func configureDataSource() {
+        dataSource = UICollectionViewDiffableDataSource<Section, Item>(collectionView: baseCollectionView, cellProvider: { (collectionView, indexPath, item) -> UICollectionViewCell? in
+            switch item {
+            case .category(let data):
+                return self.configureCategoryCell(collectionView: collectionView, indexPath: indexPath, data: data)
+            case .galery(let data):
+                return self.configureGaleryCell(collectionView: collectionView, indexPath: indexPath, data: data)
+            case .recommended(let data):
+                return self.configureRecommendedCell(collectionView: collectionView, indexPath: indexPath, data: data)
+            }
+        })
+
+        dataSource.supplementaryViewProvider = { collectionView, kind, indexPath in
+            return self.configureHeaderView(collectionView: collectionView, kind: kind, indexPath: indexPath)
         }
+
+//        var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
+//        snapshot.appendSections([.categoryTours, .galeryTour, .recommendedTours])
+//
+//        snapshot.appendItems(categories.map { Item.category($0) }, toSection: .categoryTours)
+//        snapshot.appendItems(tour.map { Item.galery($0) }, toSection: .galeryTour)
+//        snapshot.appendItems(tour.map { Item.recommended($0) }, toSection: .recommendedTours)
+//
+//        dataSource.apply(snapshot, animatingDifferences: false)
+    }
+
+    private func configureCategoryCell(collectionView: UICollectionView, indexPath: IndexPath, data: CategoryDTO) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: ToursCategoryCollectionViewCell.reuseIdentifier,
+            for: indexPath
+        ) as? ToursCategoryCollectionViewCell else {
+            fatalError("Failed to dequeue a cell of type ToursCategoryCollectionViewCell")
+        }
+        cell.displayInfo(tours: data)
+        return cell
+    }
+
+    private func configureGaleryCell(collectionView: UICollectionView, indexPath: IndexPath, data: TourDTO) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: TourCollectionViewCell.reuseIdentifier,
+            for: indexPath
+        ) as! TourCollectionViewCell
+        cell.configure(tour: data)
+        return cell
+    }
+
+    private func configureRecommendedCell(collectionView: UICollectionView, indexPath: IndexPath, data: TourDTO) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: RecommendedToursCollectionCell.reuseIdentifier,
+            for: indexPath
+        ) as! RecommendedToursCollectionCell
+        cell.setUpRecommendedView(tour: data)
+        return cell
+    }
+
+    private func configureHeaderView(collectionView: UICollectionView, kind: String, indexPath: IndexPath) -> UICollectionReusableView {
+        guard let supplementaryView = collectionView.dequeueReusableSupplementaryView(
+            ofKind: kind,
+            withReuseIdentifier: HeaderView.reuseIdentifier,
+            for: indexPath
+        ) as? HeaderView else {
+            fatalError("Cannot create header view")
+        }
+        supplementaryView.label.text = "Recommended"
+        return supplementaryView
+    }
+}
+
+extension MainViewController {
+    func createLayout() -> UICollectionViewLayout {
+        let layout = UICollectionViewCompositionalLayout { (sectionIndex: Int,                                layoutEnvironment: NSCollectionLayoutEnvironment)
+            -> NSCollectionLayoutSection? in
+            let isWideView = layoutEnvironment.container.effectiveContentSize.width > 500
+            
+            let sectionLayoutKind = Section.allCases[sectionIndex]
+            switch (sectionLayoutKind) {
+            case .categoryTours:
+                return self.generateCategoryLayout(isWide: isWideView)
+            case .galeryTour:
+                return self.generateToursLayout(isWide: isWideView)
+            case .recommendedTours:
+                return self.generateRecommendedTourLayout()
+            }
+        }
+        return layout
+    }
+    
+    private func generateCategoryLayout(isWide: Bool) -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(0.25),
+            heightDimension: .fractionalHeight(1))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
-        recommendedToursCollectionView.snp.makeConstraints {
-            $0.top.equalTo(recommendedLabel.snp.bottom).offset(15)
-//            $0.leading.equalToSuperview().offset(16)
-//            $0.trailing.equalToSuperview().offset(-16)
-            $0.bottom.leading.trailing.equalToSuperview()
-            $0.height.width.equalTo(185)
+        let groupFractionalWidth = isWide ? 0.475 : 0.95
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(CGFloat(groupFractionalWidth)),
+            heightDimension: .absolute(CGFloat(50)))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        group.contentInsets = NSDirectionalEdgeInsets(
+            top: 5,
+            leading: 5,
+            bottom: 5,
+            trailing: 5)
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.orthogonalScrollingBehavior = .continuous
+        
+        return section
+    }
+    
+    private func generateRecommendedTourLayout() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1.0))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.contentInsets  = NSDirectionalEdgeInsets(
+            top: 5,
+            leading: 5,
+            bottom: 5,
+            trailing: 5)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.5))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        
+        let headerSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .estimated(44))
+        let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: headerSize,
+            elementKind: MainViewController.sectionHeaderElementKind,
+            alignment: .top)
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.boundarySupplementaryItems = [sectionHeader]
+        
+        return section
+    }
+    
+    private func generateToursLayout(isWide: Bool) -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .fractionalWidth(2/3))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupFractionalWidth = isWide ? 0.475 : 0.95
+        let groupFractionalHeight: Float = isWide ? 1/3 : 2/3
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(CGFloat(groupFractionalWidth)),
+            heightDimension: .fractionalWidth(CGFloat(groupFractionalHeight)))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        group.contentInsets = NSDirectionalEdgeInsets(
+            top: 5,
+            leading: 5,
+            bottom: 5,
+            trailing: 5)
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.orthogonalScrollingBehavior = .groupPaging
+        return section
+    }
+}
+
+extension MainViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        // ...
+        
+        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TourCollectionViewCell.reuseIdentifier, for: indexPath) as? TourCollectionViewCell {
+            cell.coordinator = coordinator
+            return cell
+        }
+        return UICollectionViewCell()
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let section = Section.allCases[indexPath.section]
+        let item = dataSource.itemIdentifier(for: indexPath)
+        
+        switch section {
+        case .categoryTours:
+            if case .category(_) = item {
+                if let cell = collectionView.cellForItem(at: indexPath) as? ToursCategoryCollectionViewCell {
+                    cell.categoryLabel.font = UIFont(name: "Avenir Next Bold", size: 16)
+                    cell.categoryLabel.textColor = .red
+                    cell.selectedPoint.isHidden = false
+                }
+            }
+        case .galeryTour:
+            if case let .galery(data) = item {
+                let detailViewModel = DetailViewModel()
+                detailViewModel.tourImage = data.imageURL
+                detailViewModel.tourName = data.tourName
+                let detailViewController = DetailViewController(viewModel: detailViewModel)
+                navigationController?.pushViewController(detailViewController, animated: true)
+            }
+            
+        case .recommendedTours:
+            if case let .galery(data) = item {
+                let detailViewModel = DetailViewModel()
+                detailViewModel.tourImage = data.imageURL
+                detailViewModel.tourName = data.tourName
+
+                let detailViewController = DetailViewController(viewModel: detailViewModel)
+                navigationController?.pushViewController(detailViewController, animated: true)
+            }
         }
     }
     
-    private func configureCollectionViews() {
-        toursCategoryCollectionView.register(ToursCategoryCollectionViewCell.self, forCellWithReuseIdentifier: ToursCategoryCollectionViewCell.reuseIdentifier)
-        toursCategoryCollectionView.dataSource = self
-        toursCategoryCollectionView.delegate = self
-        
-        toursCollectionView.register(TourCollectionViewCell.self, forCellWithReuseIdentifier: TourCollectionViewCell.reuseIdentifier)
-        toursCollectionView.dataSource = self
-        toursCollectionView.delegate = self
-        
-        recommendedToursCollectionView.register(RecommendedToursCollectionCell.self, forCellWithReuseIdentifier: RecommendedToursCollectionCell.reuseIdentifier)
-        recommendedToursCollectionView.dataSource = self
-        recommendedToursCollectionView.delegate = self
-    }
-}
-
-// MARK: UICollectionViewDataSource
-extension MainViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if collectionView == toursCategoryCollectionView {
-            return toursCategoryData.count
-        } else if collectionView == toursCollectionView {
-            return toursData.count
-        } else if collectionView == recommendedToursCollectionView {
-            return toursData.count
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        if Section.allCases[indexPath.section] == .categoryTours {
+            let item = dataSource.itemIdentifier(for: indexPath)
+            if case .category(_) = item {
+                if let cell = collectionView.cellForItem(at: indexPath) as? ToursCategoryCollectionViewCell {
+                    cell.categoryLabel.font = UIFont(name: "Avenir Next", size: 16)
+                    cell.categoryLabel.textColor = .black
+                    cell.selectedPoint.isHidden = true
+                    cell.sizeToFit()
+                }
+            }
         }
-        return 0
-    }
-   
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if collectionView == toursCategoryCollectionView {
-            guard let cell = toursCategoryCollectionView.dequeueReusableCell(
-                withReuseIdentifier: ToursCategoryCollectionViewCell.reuseIdentifier,
-                for: indexPath) as? ToursCategoryCollectionViewCell else { fatalError() }
-            
-            let toursData = toursCategoryData[indexPath.row]
-            cell.displayInfo(tours: toursData)
-            return cell
-        } else if  collectionView == toursCollectionView {
-            guard let cell = toursCollectionView.dequeueReusableCell(
-                withReuseIdentifier: TourCollectionViewCell.reuseIdentifier,
-                for: indexPath) as? TourCollectionViewCell else { fatalError() }
-            let tour = toursData[indexPath.item]
-            cell.configure(tour: tour)
-            return cell
-        } else if collectionView == recommendedToursCollectionView {
-            guard let cell = recommendedToursCollectionView.dequeueReusableCell(
-                withReuseIdentifier: RecommendedToursCollectionCell.reuseIdentifier,
-                for: indexPath) as? RecommendedToursCollectionCell else { fatalError() }
-            let recommended = toursData[indexPath.item]
-            cell.setUpRecommendedView(tour: recommended)
-            return cell
-        }
-        fatalError("Unexpected collection view")
-    }
-}
-
-// MARK: - UICollectionViewDelegate
-extension MainViewController: UICollectionViewDelegate {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let pageWidth = scrollView.frame.width
-        let currentPage = Int((scrollView.contentOffset.x + pageWidth / 2) / pageWidth)
-        pageControl.currentPage = currentPage
-    }
-}
-
-// MARK: - UICollectionViewDelegateFlowLayout
-extension MainViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if collectionView == toursCategoryCollectionView {
-            let category = toursCategoryData[indexPath.item]
-            let label = UILabel()
-            label.text = category.name
-            label.font = .systemFont(ofSize: 16, weight: .medium)
-            label.sizeToFit()
-            return CGSize(width: label.frame.width + 20, height: collectionView.bounds.height)
-        } else if collectionView == toursCollectionView {
-            return CGSize(width: 335, height: 254)
-        } else if collectionView == recommendedToursCollectionView {
-            return CGSize(width: 185, height: 185)
-        }
-        return CGSize.zero
     }
 }
 

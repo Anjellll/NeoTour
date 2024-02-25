@@ -29,11 +29,13 @@ class RecommendedToursCollectionCell: UICollectionViewCell, ReuseIdentifying {
         setUpUI()
     }
     
-    func setUpRecommendedView(tour: TourModel) {
-        placeNameLabel.text = tour.name
+    func setUpRecommendedView(tour: TourDTO) {
+        placeNameLabel.text = tour.tourName
         
-        if let image = tour.image {
-            placeImage.image = UIImage(named: image)
+        
+        if let tourImageURL = tour.imageURL,
+           let imageURL = URL(string: tourImageURL) {
+            placeImage.kf.setImage(with: imageURL, placeholder: UIImage(named: "defaultImage"))
         } else {
             placeImage.image = UIImage(named: "defaultImage")
         }

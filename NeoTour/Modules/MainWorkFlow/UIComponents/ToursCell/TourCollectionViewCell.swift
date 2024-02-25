@@ -6,14 +6,16 @@
 //
 
 import UIKit
+import Kingfisher
 
 class TourCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
+    
+    var coordinator: AppCoordinator?
     
     private lazy var placeNameLabel: UILabel = {
         var label = UILabel()
         label.font = .systemFont(ofSize: 20, weight: .medium)
         label.textColor = UIColor.white
-//        label.backgroundColor = .red
         return label
     }()
     
@@ -29,15 +31,17 @@ class TourCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setUpUI()
+        self.isUserInteractionEnabled = true
     }
     
-    func configure(tour: TourModel) {
-        placeNameLabel.text = tour.name
+    func configure(tour: TourDTO) {
+        placeNameLabel.text = tour.tourName
         
-        if let image = tour.image {
-            placeImage.image = UIImage(named: image)
+        if let tourImageURL = tour.imageURL,
+           let imageURL = URL(string: tourImageURL) {
+            placeImage.kf.setImage(with: imageURL, placeholder: UIImage(named: "defaultImage"))
         } else {
-            placeImage.image = UIImage(named: "placeholderImage")
+            placeImage.image = UIImage(named: "defaultImage")
         }
     }
     

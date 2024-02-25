@@ -15,8 +15,8 @@ final class AppCoordinator {
     }
 
     func start() {
-        let onboardingViewModel = TestingDetailViewModel()
-        let onboardingViewController = TestingDetailViewController(viewModel: onboardingViewModel)
+        let onboardingViewModel = OnboardingViewModel()
+        let onboardingViewController = OnboardingViewController(viewModel: onboardingViewModel)
         onboardingViewController.coordinator = self
 
         window?.rootViewController = onboardingViewController
@@ -24,11 +24,23 @@ final class AppCoordinator {
     }
 
     func goToMainScreen() {
-        let mainViewModel = TourDetailsViewModel()
-        let mainViewController = TourDetailsViewController(viewModel: mainViewModel)
-        window?.rootViewController = mainViewController
+        let mainViewModel = MainViewModel()
+        let mainViewController = MainViewController(viewModel: mainViewModel)
+        let navigationController = UINavigationController(rootViewController: mainViewController)
+        window?.rootViewController = navigationController
     }
     
+    func showDetail(with data: TourDTO) {
+        let viewModel = DetailViewModel()
+        let detailViewController = DetailViewController(viewModel: viewModel)
+        detailViewController.tour = data
+
+        if let navigationController = window?.rootViewController as? UINavigationController {
+            navigationController.pushViewController(detailViewController, animated: true)
+        } else {
+        }
+    }
+
     func bookNowButtonTapped() {
         let viewModel = PopUpInformationViewModel()
         let viewController = PopUpInformationViewController(viewModel: viewModel)
@@ -42,9 +54,5 @@ final class AppCoordinator {
         if let rootViewController = UIApplication.shared.keyWindow?.rootViewController {
             rootViewController.present(viewController, animated: true, completion: nil)
         }
-        // или, если вы хотите установить его как rootViewController
-        // UIApplication.shared.keyWindow?.rootViewController = viewController
     }
 }
-
-

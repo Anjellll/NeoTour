@@ -34,7 +34,7 @@ class TourDetailsViewController: UIViewController, ReuseIdentifying {
     }
 }
 
-extension TourDetailsViewController {
+extension  {
     
     func registerCell() {
         collectionView?.register(TestingCollectionViewCell.self, forCellWithReuseIdentifier: TestingCollectionViewCell.reuseIdentifier)
