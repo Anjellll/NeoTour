@@ -10,8 +10,6 @@ import Kingfisher
 
 class TourCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
     
-    var coordinator: AppCoordinator?
-    
     private lazy var placeNameLabel: UILabel = {
         var label = UILabel()
         label.font = .systemFont(ofSize: 20, weight: .medium)
@@ -64,7 +62,7 @@ extension TourCollectionViewCell {
     private func setupConstraints() {
         placeImage.snp.makeConstraints {
             $0.edges.equalToSuperview()
-            $0.height.width.equalTo(185)  // ?
+            $0.height.width.equalTo(185)  
         }
         
         placeNameLabel.snp.makeConstraints {

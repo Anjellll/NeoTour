@@ -1,17 +1,18 @@
 //
-//  PopUpInformationViewController.swift
+//  PopUpView.swift
 //  NeoTour
 //
-//  Created by anjella on 23/2/24.
+//  Created by anjella on 3/3/24.
 //
 
 import UIKit
 
-class PopUpInformationViewController: UIViewController {
-
+class PopUpView: UIView {
+    
     private var viewModel: PopUpInformationViewModel
     var tour: TourDTO?
     var selectedTourID: String?
+    weak var parentViewController: UIViewController?
 
     let tableView = UITableView()
     let codeOptions = ["+996","+7","+8"]
@@ -22,25 +23,18 @@ class PopUpInformationViewController: UIViewController {
     ]
     var isDropdownVisible = false
     
-    init(viewModel: PopUpInformationViewModel) {
+    init(frame: CGRect, viewModel: PopUpInformationViewModel) {
         self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
-        self.viewModel.showAlertClosure = { [weak self] in
-            self?.showAlert()
-        }
+        super.init(frame: frame)
+        backgroundColor = .white
+        setUpUI()
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-//    lazy var popUpView: PopUpView = {
-//        let frame = CGRect(x: 0, y: 0, width: 450, height: 800) // Provide the desired frame
-//        var view = PopUpView(frame: frame, viewModel: viewModel)
-//        return view
-//    }()
-
-    
+   
     private lazy var infoTitleLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
@@ -79,10 +73,9 @@ class PopUpInformationViewController: UIViewController {
         textField.textContentType = .init(rawValue: "")
         textField.layer.cornerRadius = 50 / 2
         textField.layer.borderWidth = 1
-        textField.layer.borderColor = UIColor.gray.cgColor
+        textField.layer.borderColor = UIColor(red: 0.712, green: 0.712, blue: 0.712, alpha: 1).cgColor
         textField.textColor = .black
         textField.isUserInteractionEnabled = true
-        textField.keyboardType = .numberPad
 
         let leftPadding = UIView(frame: CGRect(x: 0, y: 0, width: 125, height: textField.frame.height))
         textField.leftView = leftPadding
@@ -91,7 +84,6 @@ class PopUpInformationViewController: UIViewController {
         let rightPadding = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: textField.frame.height))
         textField.rightView = rightPadding
         textField.rightViewMode = .always
-        textField.delegate = self
 
         return textField
     }()
@@ -135,7 +127,7 @@ class PopUpInformationViewController: UIViewController {
         textField.textContentType = .init(rawValue: "")
         textField.layer.cornerRadius = 50 / 2
         textField.layer.borderWidth = 1
-        textField.layer.borderColor = UIColor.gray.cgColor
+        textField.layer.borderColor =  UIColor(red: 0.712, green: 0.712, blue: 0.712, alpha: 1).cgColor
         textField.textColor = .black
         textField.isUserInteractionEnabled = true
         let leftPadding = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: textField.frame.height))
@@ -184,7 +176,10 @@ class PopUpInformationViewController: UIViewController {
         button.isUserInteractionEnabled = true
         button.setTitle("-", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        button.backgroundColor = .gray
+        button.backgroundColor =  UIColor(red: 106/255,
+                                          green: 98/255,
+                                          blue: 183/255,
+                                          alpha: 1)
         button.layer.cornerRadius = 14
         button.addTarget(self, action: #selector(minusButtonTapped), for: .touchUpInside)
         return button
@@ -223,94 +218,11 @@ class PopUpInformationViewController: UIViewController {
                                          alpha: 1)
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 25
-        button.addTarget(self, action: #selector(submitButtonTapped), for: .touchUpInside)
+//        button.addTarget(self, action: #selector(submitButtonTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .white
-        setUpUI()
-        configTableView()
-        setupUI()
-    }
-    
-    private func setupUI() {
-        phoneNumberTF.addTarget(self, action: #selector(phoneNumberDidChange), for: .editingChanged)
-        commentariesTF.addTarget(self, action: #selector(commentariesDidChange), for: .editingChanged)
-        updateUI()
-    }
-    
-    @objc private func phoneNumberDidChange() {
-        viewModel.phoneNumberDidChange(phoneNumberTF.text ?? "")
-        updateUI()
-    }
-    
-    @objc private func commentariesDidChange() {
-        viewModel.commentariesDidChange(commentariesTF.text ?? "")
-        updateUI()
-    }
-    
-    private func updateUI() {
-        phoneNumberTF.layer.borderColor = viewModel.phoneNumberBorderColor.cgColor
-        commentariesTF.layer.borderColor = viewModel.commentariesBorderColor.cgColor
-        submitButton.isEnabled = viewModel.isSubmitButtonEnabled
-        submitButton.backgroundColor = viewModel.isSubmitButtonEnabled ?
-        UIColor(red: 106/255, green: 98/255, blue: 183/255, alpha: 1) : UIColor(red: 185/255, green: 177/255, blue: 255/255, alpha: 1)
-    }
-    
-    @objc private func submitButtonTapped() {
-        guard viewModel.isSubmitButtonEnabled else {
-            return
-        }
-
-        guard let tourID = tour?.tourID else {
-            print("⚠️Ошибка: Не удалось получить tourID")
-            return
-        }
-        let phoneNumber = viewModel.phoneNumber ?? ""
-        let commentaries = viewModel.commentaries ?? ""
-        let numberOfPeople = viewModel.currentPeopleCount
-        let apiType = NetworkAPI.addReservation(tourID: tourID, phoneNumber: phoneNumber, reservationComment: commentaries, numberOfPeople: numberOfPeople)
-
-        NetworkLayer.shared.addReservation(apiType: apiType, tourID: tourID, phoneNumber: phoneNumber, reservationComment: commentaries, numberOfPeople: numberOfPeople) { result in
-            switch result {
-            case .success(let message):
-                DispatchQueue.main.async {
-                    self.showAlert(with: "Успешно",
-                                   message: "Ваше бронирование успешно! Бронирование ID: \(message)")
-                }
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    var errorMessage = "Тур не может быть забронирован."
-                    if let data = error.localizedDescription.data(using: .utf8) {
-                        do {
-                            let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-                            if let serverError = json?["error"] as? String {
-                                errorMessage = serverError
-                            }
-                        } catch {
-                            errorMessage = error.localizedDescription
-                        }
-                    }
-                    self.showAlert(with: "Ошибка", message: "Тур не может быть забронирован!")
-                }
-            }
-        }
-    }
-
-    private func showAlert(with title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-        alert.addAction(okAction)
-        present(alert, animated: true, completion: nil)
-    }
-
-    private func showAlert() {
-        let viewController = AlertViewController()
-        present(viewController, animated: true, completion: nil)
-    }
     
     @objc func showSmallView() {
         isDropdownVisible.toggle()
@@ -331,9 +243,48 @@ class PopUpInformationViewController: UIViewController {
         }
 
         UIView.animate(withDuration: 0.3) {
-            self.view.layoutIfNeeded()
+            self.superview?.layoutIfNeeded()
         }
     }
+    
+//    @objc private func submitButtonTapped() {
+//        guard viewModel.isSubmitButtonEnabled else {
+//            return
+//        }
+//
+//        guard let tourID = tour?.tourID else {
+//            print("⚠️Ошибка: Не удалось получить tourID")
+//            return
+//        }
+//        let phoneNumber = viewModel.phoneNumber ?? ""
+//        let commentaries = viewModel.commentaries ?? ""
+//        let numberOfPeople = viewModel.currentPeopleCount
+//        let apiType = NetworkAPI.addReservation(tourID: tourID, phoneNumber: phoneNumber, reservationComment: commentaries, numberOfPeople: numberOfPeople)
+//
+//        NetworkLayer.shared.addReservation(apiType: apiType, tourID: tourID, phoneNumber: phoneNumber, reservationComment: commentaries, numberOfPeople: numberOfPeople) { result in
+//            switch result {
+//            case .success(let message):
+//                DispatchQueue.main.async {
+//                    self.parentViewController?.showAlert(with: "Успешно", message: "Ваше бронирование успешно! Бронирование ID: \(message)")
+//                }
+//            case .failure(let error):
+//                DispatchQueue.main.async {
+//                    var errorMessage = "Тур не может быть забронирован."
+//                    if let data = error.localizedDescription.data(using: .utf8) {
+//                        do {
+//                            let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+//                            if let serverError = json?["error"] as? String {
+//                                errorMessage = serverError
+//                            }
+//                        } catch {
+//                            errorMessage = error.localizedDescription
+//                        }
+//                    }
+//                    self.parentViewController?.showAlert(with: "Ошибка", message: errorMessage)
+//                }
+//            }
+//        }
+//    }
     
     @objc private func plusButtonTapped() {
         viewModel.incrementPeopleCount()
@@ -359,8 +310,8 @@ class PopUpInformationViewController: UIViewController {
         plusButton.backgroundColor = viewModel.isPlusButtonEnabled ?
         UIColor(red: 106/255, green: 98/255, blue: 183/255, alpha: 1) : .gray
         
-        minusButton.backgroundColor = (viewModel.currentPeopleCount == 1) ?
-            .gray : UIColor(red: 106/255, green: 98/255, blue: 183/255, alpha: 1)
+        minusButton.backgroundColor = viewModel.isMinusButtonEnabled ?
+        UIColor(red: 106/255, green: 98/255, blue: 183/255, alpha: 1) : .gray
     }
     
     func configTableView() {
@@ -371,41 +322,45 @@ class PopUpInformationViewController: UIViewController {
     }
 }
 
-extension PopUpInformationViewController {
+extension PopUpView {
     private func setUpUI() {
         setUpSubviews()
         setUpConstraints()
     }
     
     private func setUpSubviews() {
-        view.addSubview(tableView)
-        view.addSubview(infoTitleLabel)
-        view.addSubview(reservationInfoLabel)
-        view.addSubview(phoneNumberLabel)
-        view.addSubview(phoneNumberTF)
+        addSubview(tableView)
+        addSubview(infoTitleLabel)
+        addSubview(reservationInfoLabel)
+        addSubview(phoneNumberLabel)
+        addSubview(phoneNumberTF)
         phoneNumberTF.addSubview(countryImage)
         phoneNumberTF.addSubview(arrowIconButton)
         phoneNumberTF.addSubview(inputLabel)
-        view.addSubview(commentariesLabel)
-        view.addSubview(commentariesTF)
-        view.addSubview(numberOfPeopleLabel)
+        addSubview(commentariesLabel)
+        addSubview(commentariesTF)
+        addSubview(numberOfPeopleLabel)
         
-        view.addSubview(numberOfPeopleView)
+        addSubview(numberOfPeopleView)
         numberOfPeopleView.addSubview(minusButton)
         numberOfPeopleView.addSubview(plusButton)
         numberOfPeopleView.addSubview(numberOfPeoopleLabel)
         
-        view.addSubview(peopleIcon)
-        view.addSubview(peopleCountLabel)
-        view.addSubview(submitButton)
+        addSubview(peopleIcon)
+        addSubview(peopleCountLabel)
+        addSubview(submitButton)
         
     }
     
     private func setUpConstraints() {
+        guard let superview = superview else {
+            return
+        }
+        
         tableView.snp.makeConstraints { make in
             make.top.equalTo(inputLabel.snp.bottom).offset(16)
-            make.leading.equalTo(view.safeAreaLayoutGuide).offset(20)
-            make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-220)
+            make.leading.equalTo(superview.safeAreaLayoutGuide).offset(20)
+            make.trailing.equalTo(superview.safeAreaLayoutGuide).offset(-220)
             make.height.equalTo(0) // Высота будет меняться в зависимости от состояния шторки
         }
         
@@ -530,7 +485,7 @@ extension PopUpInformationViewController {
     }
 }
 
-extension PopUpInformationViewController: UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
+extension PopUpView: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return codeOptions.count
     }
@@ -559,9 +514,19 @@ extension PopUpInformationViewController: UITableViewDataSource, UITableViewDele
             countryImage.image = flagImage
         }
     }
-    
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let isNumeric = CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: string))
-        return isNumeric
-    }
 }
+
+
+
+
+
+//import UIKit
+//
+//extension UIViewController {
+//    func showAlert(with title: String, message: String) {
+//        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+//        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+//        alertController.addAction(okAction)
+//        present(alertController, animated: true, completion: nil)
+//    }
+//}

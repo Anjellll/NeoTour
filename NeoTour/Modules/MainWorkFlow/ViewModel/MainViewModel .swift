@@ -8,7 +8,7 @@
 import Foundation
 import Alamofire
 
-protocol MainViewModelType {
+protocol MainViewModelType: AnyObject {
     var reloadTourUI: (() -> Void)? { get set }
     var reloadCategoryUI: (() -> Void)? { get set }
     func fetchTour()
@@ -23,7 +23,6 @@ class MainViewModel: MainViewModelType {
     var tourCategories: [CategoryDTO] = []
     private var tours: [TourDTO] = []
     
-    
     private let networkLayer = NetworkLayer.shared
     
     func fetchTour() {
@@ -33,11 +32,12 @@ class MainViewModel: MainViewModelType {
                 self?.tours = tours
                 self?.reloadTourUI?()
             case .failure(let error):
-                print("Ошибка при загрузке туров: \(error)")
+                print("Ошибка при загрузке туров:")
+                self?.printErrorDetails(error)
             }
         }
     }
-    
+
     func fetchCategory() {
         networkLayer.fetchCategory(apiType: .getTourCategoryList) { [weak self] result in
             switch result {
@@ -45,11 +45,18 @@ class MainViewModel: MainViewModelType {
                 self?.tourCategories = tourCategories
                 self?.reloadCategoryUI?()
             case .failure(let error):
-                print("Ошибка при загрузке категорий: \(error)")
+                print("Ошибка при загрузке категорий:")
+                self?.printErrorDetails(error)
             }
         }
     }
-    
+
+    private func printErrorDetails(_ error: Error) {
+        let nsError = error as NSError
+        print("Localized description: \(nsError.localizedDescription)")
+        print("Failure reason: \(nsError.localizedFailureReason ?? "")")
+        print("Recovery suggestion: \(nsError.localizedRecoverySuggestion ?? "")")
+    }
     
     func getTour() -> [TourDTO] {
         return tours

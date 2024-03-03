@@ -8,14 +8,13 @@
 import UIKit
 import SnapKit
 
-class OnboardingViewController: UIViewController {
+class OnboardingViewController: UIViewController, OnboardingViewModelType {
     
-    private var viewModel: OnboardingViewModel?
-    weak var coordinator: AppCoordinator?
+    private var viewModel: OnboardingViewModel
     
-    init(viewModel: OnboardingViewModel) {
-        self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
+     init(viewModel: OnboardingViewModel) {
+         self.viewModel = viewModel
+         super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder: NSCoder) {
@@ -70,13 +69,10 @@ class OnboardingViewController: UIViewController {
         button.layer.cornerRadius = 25
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         button.addTarget(self, action: #selector(goToMainScreen), for: .touchUpInside)
-        button.backgroundColor = UIColor(
-            red: CGFloat(0x6A) / 255.0,
-            green: CGFloat(0x62) / 255.0,
-            blue: CGFloat(0xB7) / 255.0,
-            alpha: 1.0
-        )
-        
+        button.backgroundColor = UIColor(red: 106/255,
+                                         green: 98/255,
+                                         blue: 183/255,
+                                         alpha: 1)
         let image = UIImage(systemName: "arrow.right")
         button.setImage(image, for: .normal)
         button.tintColor = .white
@@ -98,8 +94,10 @@ class OnboardingViewController: UIViewController {
     }
     
     @objc private func goToMainScreen() {
-        coordinator?.goToMainScreen()
-   }
+        let mainViewModel = MainViewModel()
+        let mainViewController = MainViewController(viewModel: mainViewModel)
+        navigationController?.pushViewController(mainViewController, animated: true)
+    }
 }
 
 extension OnboardingViewController {

@@ -32,7 +32,6 @@ class RecommendedToursCollectionCell: UICollectionViewCell, ReuseIdentifying {
     func setUpRecommendedView(tour: TourDTO) {
         placeNameLabel.text = tour.tourName
         
-        
         if let tourImageURL = tour.imageURL,
            let imageURL = URL(string: tourImageURL) {
             placeImage.kf.setImage(with: imageURL, placeholder: UIImage(named: "defaultImage"))

@@ -8,63 +8,78 @@
 import UIKit
 import Alamofire
 
+import Alamofire
+
 enum NetworkAPI {
     
     // MARK: - GET
     case getTourCategoryList
     case getTourList
-    case getTourDetails(tourID: String)
     
     // MARK: - POST
     case addReservation(tourID: String,
                         phoneNumber: String,
                         reservationComment: String,
                         numberOfPeople: Int)
-    
-    var host: String {
-        "164.92.239.214:9999"
+
+    // MARK: - Properties
+    private var scheme: String {
+        return "http"
     }
     
-    var path: String {
+    private var host: String {
+        return "164.92.239.214"
+    }
+    
+    private var port: Int {
+        return 9999
+    }
+    
+    private var path: String {
         switch self {
-        case .getTourList:
-            return "/neotour/tours"
         case .getTourCategoryList:
             return "/neotour/categories"
-        case .getTourDetails(tourID: let tourID):
-            return "/neotour/tours/\(tourID)"
-        case .addReservation(tourID: let tourID, phoneNumber: let phoneNumber, reservationComment: let reservationComment, numberOfPeople: let numberOfPeople):
-            return "/neotour/tours/{id}/addReservation"
+        case .getTourList:
+            return "/neotour/tours"
+        case .addReservation(let tourID, _, _, _):
+            return "/neotour/tours/\(tourID)/addReservation"
         }
     }
     
-    var method: HTTPMethod {
+    internal var method: HTTPMethod {
         switch self {
-        case .getTourList, .getTourCategoryList, .getTourDetails:
+        case .getTourCategoryList, .getTourList:
             return .get
         case .addReservation:
             return .post
         }
     }
     
-    var parameters: [String: Any]? {
+    internal var parameters: Parameters? {
         switch self {
-        case .getTourList, .getTourCategoryList, .getTourDetails:
-            return nil
         case .addReservation(let tourID, let phoneNumber, let reservationComment, let numberOfPeople):
-            return [
-                "id": tourID,
-                "phoneNumber": phoneNumber,
-                "reservationComment": reservationComment,
-                "numberOfPeople": numberOfPeople
-            ]
+            return ["tourID": tourID,
+                    "phoneNumber": phoneNumber,
+                    "reservationComment": reservationComment,
+                    "numberOfPeople": numberOfPeople]
+        default:
+            return nil
         }
     }
     
-    var components: URLComponents {
+    var url: URL? {
+        var components = components
+        components.queryItems = parameters?.map { key, value in
+            URLQueryItem(name: key, value: String(describing: value))
+        }
+        return components.url
+    }
+
+    private var components: URLComponents {
         var components = URLComponents()
-        components.scheme = "http"
+        components.scheme = scheme
         components.host = host
+        components.port = port
         components.path = path
         
         return components

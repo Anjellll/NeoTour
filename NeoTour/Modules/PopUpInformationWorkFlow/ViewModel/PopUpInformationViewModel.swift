@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol PopUpInformationViewModelProtocol {
+protocol PopUpInformationViewModelProtocol: AnyObject {
     var phoneNumber: String? { get set }
     var commentaries: String? { get set }
     var isSubmitButtonEnabled: Bool { get }
@@ -16,7 +16,6 @@ protocol PopUpInformationViewModelProtocol {
 
     func phoneNumberDidChange(_ text: String)
     func commentariesDidChange(_ text: String)
-    func submitButtonTapped(completion: @escaping () -> Void)
     
     var currentPeopleCount: Int { get }
     var isMinusButtonEnabled: Bool { get }
@@ -75,11 +74,7 @@ class PopUpInformationViewModel: PopUpInformationViewModelProtocol {
     func commentariesDidChange(_ text: String) {
         commentaries = text
     }
-
-    func submitButtonTapped(completion: @escaping () -> Void) {
-        if isSubmitButtonEnabled {
-            showAlertClosure?() 
-            completion()
-        }
-    }
 }
+
+
+

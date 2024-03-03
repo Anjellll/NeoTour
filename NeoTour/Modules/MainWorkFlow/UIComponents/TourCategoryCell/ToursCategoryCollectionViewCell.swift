@@ -22,7 +22,10 @@ class ToursCategoryCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
     lazy var selectedPoint: UIView = {
         let circleView = UIView()
         circleView.translatesAutoresizingMaskIntoConstraints = false
-        circleView.backgroundColor = .red
+        circleView.backgroundColor = UIColor(red: 106/255,
+                                             green: 98/255,
+                                             blue: 183/255,
+                                             alpha: 1)
         circleView.layer.cornerRadius = 3.5
         circleView.isHidden = true
         return circleView
@@ -41,7 +44,6 @@ class ToursCategoryCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
         } else {
             categoryLabel.text = "N/A"
         }
-        
     }
     
     required init?(coder aDecoder: NSCoder) {

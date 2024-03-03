@@ -8,6 +8,5 @@
 import Foundation
 
 class DetailViewModel {
-    var tourImage: String?
-    var tourName: String?
+   
 }

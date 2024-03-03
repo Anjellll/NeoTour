@@ -40,8 +40,6 @@ class TourDetailsCell: UICollectionViewCell, ReuseIdentifying {
     lazy var contentViewTesting: UIView = {
         let circleView = UIView()
         circleView.translatesAutoresizingMaskIntoConstraints = false
-//        circleView.layer.cornerRadius = 410 / 10
-//        circleView.backgroundColor = .red
         return circleView
     }()
     
@@ -78,7 +76,7 @@ extension TourDetailsCell {
         contentViewTesting.addSubview(userReview)
     }
     
-    private func setUpConstraints() {   // здесь надо менять!!!
+    private func setUpConstraints() { 
         contentViewTesting.snp.makeConstraints {
             $0.top.equalToSuperview().inset(10)
             $0.left.equalToSuperview().offset(16)

@@ -11,7 +11,7 @@ class MainViewController: UIViewController, ReuseIdentifying {
     
     static let sectionHeaderElementKind = "section-header-element-kin"
     private var viewModel: MainViewModel
-    weak var coordinator: AppCoordinator?
+    private var selectedIndexPath: IndexPath?
     
     enum Section: CaseIterable {
         case categoryTours
@@ -37,7 +37,10 @@ class MainViewController: UIViewController, ReuseIdentifying {
             TourCollectionViewCell.self,
             forCellWithReuseIdentifier: TourCollectionViewCell.reuseIdentifier
         )
-        collectionView.register(HeaderView.self, forSupplementaryViewOfKind: MainViewController.sectionHeaderElementKind, withReuseIdentifier: HeaderView.reuseIdentifier)
+        collectionView.register(
+            HeaderView.self,
+            forSupplementaryViewOfKind: MainViewController.sectionHeaderElementKind,
+            withReuseIdentifier: HeaderView.reuseIdentifier)
         collectionView.register(
             RecommendedToursCollectionCell.self,
             forCellWithReuseIdentifier: RecommendedToursCollectionCell.reuseIdentifier
@@ -49,25 +52,19 @@ class MainViewController: UIViewController, ReuseIdentifying {
         return collectionView
     }()
     
-    private var toursCategoryData: [ToursCategoryModel] = [
-        ToursCategoryModel(name: "Popular"),
-        ToursCategoryModel(name: "Featured"),
-        ToursCategoryModel(name: "Most Visited"),
-        ToursCategoryModel(name: "Europe"),
-        ToursCategoryModel(name: "Asia"),
-        ToursCategoryModel(name: "Asia")
-    ]
-    
-    private var toursData: [TourModel] = [
-    TourModel(name: "Northern Mountain", image: "placeImage1"),
-    TourModel(name: "Mount Fuji", image: "placeImage2"),
-    TourModel(name: "Northern Mountain", image: "placeImage1"),
-    TourModel(name: "Mount Fuji", image: "placeImage2")
-    ]
+//    private lazy var mainCollectionView: MainCollectionView = {
+//        let collectionView = MainCollectionView(frame: .zero)
+//        collectionView.translatesAutoresizingMaskIntoConstraints = false
+//        collectionView.indicatorStyle = .black
+//        collectionView.showsHorizontalScrollIndicator = false
+//        collectionView.isUserInteractionEnabled = true
+//        return collectionView
+//    }()
     
     private var tour: [TourDTO] = []
+    private var tourRecommended: [TourDTO] = []
     private var categories: [CategoryDTO] = []
-    
+
     init(viewModel: MainViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -84,31 +81,30 @@ class MainViewController: UIViewController, ReuseIdentifying {
         label.font = UIFont(name: "Avenir Next Bold", size: 32)
         return label
     }()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        baseCollectionView.delegate = self
-        baseCollectionView.dataSource = dataSource
-
+        navigationItem.hidesBackButton = true
     }
     
     override func loadView() {
         super.loadView()
         setUpUI()
         configureDataSource()
-       
-        bindViewModel()
+        setUpCollectionView()
+        fetchTour()
         viewModel.fetchTour()
         fetchCategory()
         viewModel.fetchCategory()
         updateCollectionView()
     }
     
-    private func bindViewModel() {
+    private func fetchTour() {
         viewModel.reloadTourUI = { [weak self] in
             guard let self = self else { return }
             self.tour = self.viewModel.getTour()
+            self.tourRecommended = self.viewModel.getTour()
             self.updateCollectionView()
         }
     }
@@ -134,8 +130,13 @@ class MainViewController: UIViewController, ReuseIdentifying {
         snapshot.appendSections([.categoryTours, .galeryTour, .recommendedTours])
         snapshot.appendItems(categories.map { Item.category($0) }, toSection: .categoryTours)
         snapshot.appendItems(tour.map { Item.galery($0) }, toSection: .galeryTour)
-        snapshot.appendItems(tour.map { Item.recommended($0) }, toSection: .recommendedTours)
+        snapshot.appendItems(tourRecommended.map { Item.recommended($0) }, toSection: .recommendedTours)
         return snapshot
+    }
+    
+    private func setUpCollectionView() {
+        baseCollectionView.delegate = self
+        baseCollectionView.dataSource = dataSource
     }
 }
 
@@ -170,19 +171,10 @@ extension MainViewController {
                 return self.configureRecommendedCell(collectionView: collectionView, indexPath: indexPath, data: data)
             }
         })
-
+        
         dataSource.supplementaryViewProvider = { collectionView, kind, indexPath in
             return self.configureHeaderView(collectionView: collectionView, kind: kind, indexPath: indexPath)
         }
-
-//        var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
-//        snapshot.appendSections([.categoryTours, .galeryTour, .recommendedTours])
-//
-//        snapshot.appendItems(categories.map { Item.category($0) }, toSection: .categoryTours)
-//        snapshot.appendItems(tour.map { Item.galery($0) }, toSection: .galeryTour)
-//        snapshot.appendItems(tour.map { Item.recommended($0) }, toSection: .recommendedTours)
-//
-//        dataSource.apply(snapshot, animatingDifferences: false)
     }
 
     private func configureCategoryCell(collectionView: UICollectionView, indexPath: IndexPath, data: CategoryDTO) -> UICollectionViewCell {
@@ -320,62 +312,69 @@ extension MainViewController {
 }
 
 extension MainViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        // ...
-        
-        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TourCollectionViewCell.reuseIdentifier, for: indexPath) as? TourCollectionViewCell {
-            cell.coordinator = coordinator
-            return cell
-        }
-        return UICollectionViewCell()
-    }
-
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let section = Section.allCases[indexPath.section]
         let item = dataSource.itemIdentifier(for: indexPath)
         
         switch section {
         case .categoryTours:
-            if case .category(_) = item {
+            if case .category(let data) = item {
                 if let cell = collectionView.cellForItem(at: indexPath) as? ToursCategoryCollectionViewCell {
                     cell.categoryLabel.font = UIFont(name: "Avenir Next Bold", size: 16)
-                    cell.categoryLabel.textColor = .red
+                    cell.categoryLabel.textColor = UIColor(red: 106/255,
+                                                           green: 98/255,
+                                                           blue: 183/255,
+                                                           alpha: 1)
+                    updateCollectionViewForCategory(data)
                     cell.selectedPoint.isHidden = false
                 }
             }
         case .galeryTour:
             if case let .galery(data) = item {
                 let detailViewModel = DetailViewModel()
-                detailViewModel.tourImage = data.imageURL
-                detailViewModel.tourName = data.tourName
                 let detailViewController = DetailViewController(viewModel: detailViewModel)
+                detailViewController.tour = data
                 navigationController?.pushViewController(detailViewController, animated: true)
             }
-            
         case .recommendedTours:
-            if case let .galery(data) = item {
+            if case let .recommended(data) = item {
                 let detailViewModel = DetailViewModel()
-                detailViewModel.tourImage = data.imageURL
-                detailViewModel.tourName = data.tourName
-
                 let detailViewController = DetailViewController(viewModel: detailViewModel)
+                detailViewController.tour = data
                 navigationController?.pushViewController(detailViewController, animated: true)
             }
         }
     }
     
+    private func updateCollectionViewForCategory(_ category: CategoryDTO) {
+        let toursForCategory = category.tours ?? []
+        
+        tour = toursForCategory
+        updateCollectionView()
+    }
+    
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        if Section.allCases[indexPath.section] == .categoryTours {
-            let item = dataSource.itemIdentifier(for: indexPath)
-            if case .category(_) = item {
-                if let cell = collectionView.cellForItem(at: indexPath) as? ToursCategoryCollectionViewCell {
-                    cell.categoryLabel.font = UIFont(name: "Avenir Next", size: 16)
-                    cell.categoryLabel.textColor = .black
-                    cell.selectedPoint.isHidden = true
-                    cell.sizeToFit()
-                }
+        guard Section.allCases[indexPath.section] == .categoryTours else {
+            return
+        }
+        
+        let item = dataSource.itemIdentifier(for: indexPath)
+        
+        if case .category(_) = item {
+            if let cell = collectionView.cellForItem(at: indexPath) as? ToursCategoryCollectionViewCell {
+                cell.categoryLabel.font = UIFont(name: "Avenir Next", size: 16)
+                cell.categoryLabel.textColor = .black
+                
+                cell.selectedPoint.isHidden = true
+                cell.sizeToFit()
             }
         }
     }
 }
+
+
+
+
+
 

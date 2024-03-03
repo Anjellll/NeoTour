@@ -10,14 +10,13 @@ import UIKit
 class DetailViewController: UIViewController {
 
     var viewModel: DetailViewModel
-    weak var coordinator: AppCoordinator?
-    var tour: TourDTO?
+    var tour: TourDTO? {
+        didSet {
+            updateUI()
+        }
+    }
     
-    private var reviewData: [ReviewsModel] = [
-    ReviewsModel(userIcon: "userIcon", userName: "Anonymous", userReview: "That was such a nice place. The most beautiful place I’ve ever seen. My advice to everyone not to forget to take warm coat"),
-    ReviewsModel(userIcon: "userIcon", userName: "Anonymous2", userReview: "That was such a nice place. The most beautiful place I’ve ever seen. My advice to everyone not to forget to take warm coat"),
-    ReviewsModel(userIcon: "userIcon", userName: "Anonymous3", userReview: "Good good good good good Good good good good goodGood good good good good Good good good good good Good good good good good Good good good good good Good good good good good Good good good good good")
-    ]
+    private var reviewData: [ReviewsModel] = ReviewsModel.getReviews()
     
     init(viewModel: DetailViewModel) {
         self.viewModel = viewModel
@@ -28,11 +27,6 @@ class DetailViewController: UIViewController {
         var image = UIImageView()
         image.contentMode = .scaleAspectFill
         image.clipsToBounds = true
-        if let imageName = viewModel.tourImage {
-            image.image = UIImage(named: imageName)
-        } else {
-            image.image = UIImage(named: "placeImage2")
-        }
         return image
     }()
     
@@ -40,7 +34,6 @@ class DetailViewController: UIViewController {
         var label = UILabel()
         label.font = UIFont(name: "Avenir Next Bold", size: 24)
         label.textColor = UIColor.black
-        label.text = viewModel.tourName ?? "Default Name"
         return label
     }()
     
@@ -48,7 +41,6 @@ class DetailViewController: UIViewController {
         var label = UILabel()
         label.font = UIFont(name: "Avenir Next", size: 12)
         label.textColor = UIColor.black
-        label.text = "New York"
         return label
     }()
     
@@ -75,13 +67,6 @@ class DetailViewController: UIViewController {
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         label.textAlignment = .left
-        label.text =
-        """
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Dignissim eget amet viverra eget fame
-        rhoncus. Eget enim venenatis enim porta egestas malesuada et.
-        Consequat mauris lacus euismod montes.
-        """
         return label
     }()
     
@@ -90,7 +75,6 @@ class DetailViewController: UIViewController {
         label.font = UIFont(name: "Avenir Next Bold", size: 20)
         label.textColor = UIColor.black
         label.text = "Reviews"
-//        label.backgroundColor = .cyan
         return label
     }()
     
@@ -125,14 +109,25 @@ class DetailViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.translatesAutoresizingMaskIntoConstraints =  false
-//        collectionView.backgroundColor = .green
         return collectionView
     }()
+    
+    private func updateUI() {
+        placeNameLabel.text = tour?.tourName ?? "Default Name"
+        placeLocationLabel.text = tour?.tourLocation
+        descriptionTourLabel.text = tour?.tourDescription
+        if let tourImageURL = tour?.imageURL,
+           let imageURL = URL(string: tourImageURL) {
+            placeImage.kf.setImage(with: imageURL, placeholder: UIImage(named: "defaultImage"))
+        } else {
+            placeImage.image = UIImage(named: "defaultImage")
+        }
+    }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-//    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpUI()
@@ -147,9 +142,19 @@ class DetailViewController: UIViewController {
     }
     
     @objc func bookNowButtonTapped() {
-        coordinator?.bookNowButtonTapped()
-        print(bookNowButton.actions(forTarget: self, forControlEvent: .touchUpInside) ?? "No actions")
-
+        let viewModel = PopUpInformationViewModel()
+        let viewController = PopUpInformationViewController(viewModel: viewModel)
+        viewController.tour = tour
+        
+        if let sheet = viewController.sheetPresentationController {
+            sheet.detents = [.medium()]
+            sheet.prefersGrabberVisible = true
+            sheet.preferredCornerRadius = 20
+        }
+        
+        if let rootViewController = UIApplication.shared.keyWindow?.rootViewController {
+            rootViewController.present(viewController, animated: true, completion: nil)
+        }
     }
 }
 
@@ -165,7 +170,6 @@ extension DetailViewController {
         placeImage.addSubview(contentViewTesting)
         view.addSubview(placeNameLabel)
         view.addSubview(placeImage)
-        
         view.addSubview(placeLocationLabel)
         view.addSubview(placeLocationIcon)
         view.addSubview(descriptionLabel)
@@ -197,7 +201,7 @@ extension DetailViewController {
         placeNameLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(385)
             make.left.equalToSuperview().offset(16)
-            make.width.equalTo(123)
+            make.width.equalTo(280)
             make.height.equalTo(29)
         }
     

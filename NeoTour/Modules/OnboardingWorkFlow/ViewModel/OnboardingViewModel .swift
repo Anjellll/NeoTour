@@ -5,12 +5,10 @@
 //  Created by anjella on 14/2/24.
 //
 
-import Foundation
+import UIKit
 
-protocol OnboardingViewModelDelegate: AnyObject {
-
+protocol OnboardingViewModelType: AnyObject {
 }
 
-class OnboardingViewModel {
-   
+class OnboardingViewModel: OnboardingViewModelType {
 }
