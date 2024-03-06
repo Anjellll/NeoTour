@@ -21,8 +21,9 @@ class MainViewModel: MainViewModelType {
     var reloadCategoryUI: (() -> Void)?
     
     var tourCategories: [CategoryDTO] = []
-    private var tours: [TourDTO] = []
-    
+    var tours: [TourDTO] = []
+    var tourRecommended: [TourDTO] = []
+
     private let networkLayer = NetworkLayer.shared
     
     func fetchTour() {
@@ -30,6 +31,7 @@ class MainViewModel: MainViewModelType {
             switch result {
             case .success(let tours):
                 self?.tours = tours
+                self?.tourRecommended = tours
                 self?.reloadTourUI?()
             case .failure(let error):
                 print("Ошибка при загрузке туров:")
@@ -57,13 +59,4 @@ class MainViewModel: MainViewModelType {
         print("Failure reason: \(nsError.localizedFailureReason ?? "")")
         print("Recovery suggestion: \(nsError.localizedRecoverySuggestion ?? "")")
     }
-    
-    func getTour() -> [TourDTO] {
-        return tours
-    }
-    
-    func getCategories() -> [CategoryDTO] {
-        return tourCategories
-    }
-
 }

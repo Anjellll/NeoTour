@@ -27,6 +27,12 @@ protocol PopUpInformationViewModelProtocol: AnyObject {
 
 class PopUpInformationViewModel: PopUpInformationViewModelProtocol {
     
+    var tour: TourDTO?
+    
+    init(tour: TourDTO?) {
+        self.tour = tour
+    }
+    
     private var peopleCount: Int = 1
     
     var currentPeopleCount: Int {

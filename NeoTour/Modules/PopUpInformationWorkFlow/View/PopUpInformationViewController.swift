@@ -10,8 +10,6 @@ import UIKit
 class PopUpInformationViewController: UIViewController {
 
     private var viewModel: PopUpInformationViewModel
-    var tour: TourDTO?
-    var selectedTourID: String?
 
     let tableView = UITableView()
     let codeOptions = ["+996","+7","+8"]
@@ -33,13 +31,6 @@ class PopUpInformationViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-//    lazy var popUpView: PopUpView = {
-//        let frame = CGRect(x: 0, y: 0, width: 450, height: 800) // Provide the desired frame
-//        var view = PopUpView(frame: frame, viewModel: viewModel)
-//        return view
-//    }()
-
     
     private lazy var infoTitleLabel: UILabel = {
         let label = UILabel()
@@ -242,6 +233,10 @@ class PopUpInformationViewController: UIViewController {
         updateUI()
     }
     
+    func configure(with viewModel: PopUpInformationViewModel) {
+        self.viewModel = viewModel
+    }
+    
     @objc private func phoneNumberDidChange() {
         viewModel.phoneNumberDidChange(phoneNumberTF.text ?? "")
         updateUI()
@@ -265,7 +260,7 @@ class PopUpInformationViewController: UIViewController {
             return
         }
 
-        guard let tourID = tour?.tourID else {
+        guard let tourID = viewModel.tour?.tourID else {
             print("⚠️Ошибка: Не удалось получить tourID")
             return
         }
@@ -406,7 +401,7 @@ extension PopUpInformationViewController {
             make.top.equalTo(inputLabel.snp.bottom).offset(16)
             make.leading.equalTo(view.safeAreaLayoutGuide).offset(20)
             make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-220)
-            make.height.equalTo(0) // Высота будет меняться в зависимости от состояния шторки
+            make.height.equalTo(0)
         }
         
         infoTitleLabel.snp.makeConstraints {
